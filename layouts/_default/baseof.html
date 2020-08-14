@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {{ $style := resources.Get "/scss/main.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+
+    <link rel="stylesheet" href="{{ $style.Permalink }}" />
+    {{ block "head" . }} {{ end }}
+
+    <title>
+        {{ block "title" . }} {{ .Site.Title }} {{ end }}
+
+    </title>
+</head>
+
+<body>
+    <header>
+        {{ partial "nav" }}
+    </header>
+
+    <main>
+        <section id="inner">
+            {{ block "main" . }} {{ end }}
+        </section>
+    </main>
+</body>
+
+</html>

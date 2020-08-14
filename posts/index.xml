@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Vijay Pemmaraju</title>
-    <link>https://vijay.io/</link>
-    <description>Recent content on Vijay Pemmaraju</description>
+    <title>Posts on Vijay Pemmaraju</title>
+    <link>https://vijay.io/posts/</link>
+    <description>Recent content in Posts on Vijay Pemmaraju</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 14 Aug 2020 16:08:23 -0700</lastBuildDate>
     
-	<atom:link href="https://vijay.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://vijay.io/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>

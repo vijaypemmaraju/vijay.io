@@ -1,0 +1,31 @@
+
+.homepage-content {
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  display: flex;
+  width: 730px;
+}
+
+.profile {
+  padding: 24px;
+}
+
+.description {
+  padding: 32px;
+  font-size: 16px;
+}
+
+.soundcloud {
+  filter: invert(46%) sepia(98%) saturate(6362%) hue-rotate(3deg) brightness(102%) contrast(105%);
+}
+
+.linkedin {
+  filter: invert(26%) sepia(78%) saturate(5844%) hue-rotate(186deg) brightness(98%) contrast(101%);
+}
+
+.twitter {
+  filter: invert(52%) sepia(32%) saturate(3386%) hue-rotate(176deg) brightness(99%) contrast(92%);
+}

@@ -1,37 +1,39 @@
+{{ define "head" }}
+{{ $style := resources.Get "/scss/home.scss" | resources.ToCSS | resources.Minify | resources.Fingerprint }}
+<link rel="stylesheet" href="{{ $style.Permalink }}" />
+{{ end }}
 {{ define "main" }}
 <main aria-role="main">
-  <header class="homepage-header">
-    <h1>{{.Title}}</h1>
-    {{ with .Params.subtitle }}
-    <span class="subtitle">{{.}}</span>
-    {{ end }}
-  </header>
-  <div class="homepage-content">
-    <!-- Note that the content for index.html, as a sort of list page, will pull from content/_index.md -->
-    <div class="title">Vijay Pemmaraju</div>
-    <div class="subtitle">Developer & Musician</div>
+    <div class="homepage-content">
+        <div class="inner">
+            <div class="profile">
+                <img width="256" height="256" src="/vijay.jpg" />
+                <div class="icons">
+                    <a class="icon" href="https://github.com/vijaypemmaraju" target="_blank" rel="noopener">
+                        <img width="24" height="24" src="/github.svg" />
+                    </a>
+                    <a class="icon" href="https://soundcloud.com/manas-music/tracks" target="_blank" rel="noopener">
+                        <img class="soundcloud" width="24" height="24" src="/soundcloud.svg" />
+                    </a>
+                    <a class="icon" href="https://www.linkedin.com/in/vijay-pemmaraju-4a482951/" target="_blank" rel="noopener">
+                        <img class="linkedin" width="24" height="24" src="/linkedin.svg" />
+                    </a>
+                    <a class="icon" href="https://www.twitter.com/vpemm" target="_blank" rel="noopener">
+                        <img class="twitter" width="24" height="24" src="/twitter.svg" />
+                    </a>
+                </div>
+            </div>
+            <div class="description">
+                <p>Software Engineer</p>
 
-    <div class="links">
-      <a
-        class="link"
-        href="https://github.com/vijaypemmaraju"
-        target="_blank"
-        rel="noopener"
-      >
-        <img width="24" height="24" src="/github.svg" />
-      </a>
-      |
-      <a
-        class="link"
-        href="https://soundcloud.com/manas-music/tracks"
-        target="_blank"
-        rel="noopener"
-        ><img width="24" height="24" src="/soundcloud.svg" />
-      </a>
+                <p>Musician</p>
+
+                <p>He/Him</p>
+            </div>
+        </div>
     </div>
-  </div>
-  <div>
-    {{ range first 10 .Site.RegularPages }} {{ .Render "summary"}} {{ end }}
-  </div>
+    <div>
+        {{ range first 10 .Site.RegularPages }} {{ .Render "summary"}} {{ end }}
+    </div>
 </main>
 {{ end }}

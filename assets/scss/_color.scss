@@ -1,0 +1,17 @@
+$_PRIMARY: rgb(12, 107, 165);
+$_WHITE: rgb(240, 240, 240);
+$_BLACK: rgb(45, 45, 45);
+
+@function color($type: unspecified) {
+  $_ERROR_HEAD: "color($type = #{$type})";
+
+  @if $type != primary and $type != white and $type != black {
+    @error "#{$_ERROR_HEAD}: $type must be one of: primary, white, black";
+  } @else if $type == primary {
+    @return $_PRIMARY;
+  } @else if $type == white {
+    @return $_WHITE;
+  } @else if $type == black {
+    @return $_BLACK;
+  }
+}

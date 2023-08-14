@@ -1,0 +1,24 @@
+---
+import Layout from "../layouts/Layout.astro";
+import VijayHeader from "../components/Vijay/VijayHeader";
+import GamesHeader from "../components/Games/GamesHeader";
+import DailyDungeonIframeFull from "../components/Games/DailyDungeonIframeFull";
+---
+
+<Layout title="Vijay Pemmaraju">
+  <main>
+    <div class="h-8 py-8">
+      <GamesHeader client:visible />
+    </div>
+    <DailyDungeonIframeFull client:visible />
+  </main>
+</Layout>
+
+<style>
+  main {
+    margin: auto;
+    height: 100vh;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+</style>

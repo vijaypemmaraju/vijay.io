@@ -8,7 +8,6 @@ const Empty: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
-
   </div>
 );
 

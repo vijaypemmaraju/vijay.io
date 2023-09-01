@@ -8,18 +8,23 @@ import VijayHeader from "./Vijay/VijayHeader";
 import VijayHeaderBig from "./Vijay/VijayHeaderBig";
 import GamesHeader from "./Games/GamesHeader";
 import Video from "./MusicVideo";
+import GameIcon from "./GameIcon";
+import CodeIcon from "./CodeIcon";
+import MusicIcon from "./MusicIcon";
+import VijayFooter from "./Vijay/VijayFooter";
+import StreamTypers from "./StreamTypers";
 
 const Items = [DailyDungeonIframe, Empty, Empty, Vijay, Empty, Empty, Empty];
 
 const Bento = () => {
 	const [currentHovered, setCurrentHovered] = useState<string | null>(null);
 
-	let Items = [DailyDungeonIframe, Empty, Video, Vijay, Empty, Empty, Empty];
+	let Items = [DailyDungeonIframe, GameIcon, Video, Vijay, MusicIcon, CodeIcon, StreamTypers];
 	let itemClassNames = ["", "", "", "col-span-2", "", "", "col-span-2"];
 
 	if (currentHovered === "Vijay") {
 		itemClassNames = ["col-span-2", "row-span-3", "col-span-2", "col-span-2"];
-		Items = [VijayHeaderBig, VijayTallImage, Vijay, Empty,]
+		Items = [VijayHeaderBig, VijayTallImage, Vijay, VijayFooter]
 	}
 
 	if (currentHovered === "DailyDungeonIframe") {
@@ -30,8 +35,8 @@ const Bento = () => {
 	return (
 		<div
 			className={cx(
-				"grid auto-rows-[250px] grid-cols-3 transition-all",
-				currentHovered ? "gap-0" : "gap-1"
+				"grid auto-rows-[250px] grid-cols-3 transition-all duration-300 ease-in-out",
+				currentHovered ? "gap-0" : "gap-3"
 			)}
 		>
 			{Items.map((Item, index) => {

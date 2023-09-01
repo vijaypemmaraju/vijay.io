@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import type { FC } from "react";
 import type { ItemProps } from "../types";
 
@@ -11,14 +12,11 @@ const VijayHeaderBig: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        <div className="text-4xl" style={{
+        <motion.div className="text-5xl" animate={{ opacity: [0, 1], y: [-50, 0] }} style={{
           'view-transition-name': 'vijay',
         }}>
           Vijay Pemmaraju
-        </div>
-        <div>
-          Developer, Game Designer, and Musician
-        </div>
+        </motion.div>
       </div>
     </a>
   )

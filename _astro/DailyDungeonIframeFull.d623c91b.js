@@ -1,0 +1,1 @@
+import{j as e}from"./jsx-runtime.21f6a92b.js";import"./index.c7f9a1cc.js";const n=({onMouseEnter:o,onMouseLeave:a})=>e.jsx("iframe",{src:"http://dailydungeon.net",width:"100%",height:"100%",frameBorder:"0",scrolling:"no",className:"pointer-events-none"});n.displayName="DailyDungeonIframe";export{n as default};

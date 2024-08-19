@@ -93,49 +93,47 @@ const Description: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
   console.log(letterPositions);
 
   return (
-    <a href="/vijay">
-      <div
-        className="flex flex-col w-full h-full justify-center items-center bg-secondary text-secondary-content  hover:border-2 hover:border-white hover:rounded-lg transition-all"
-        id="vijay"
-        onMouseEnter={() => {
-          setIsHovered(true);
-          onMouseEnter?.();
-          start();
-        }}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          onMouseLeave?.();
-          reset();
+    <div
+      className="flex flex-col w-full h-full justify-center items-center bg-secondary text-secondary-content  hover:border-2 hover:border-white hover:rounded-lg transition-all"
+      id="vijay"
+      onMouseEnter={() => {
+        setIsHovered(true);
+        onMouseEnter?.();
+        start();
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        onMouseLeave?.();
+        reset();
+      }}
+    >
+      <motion.span
+        layout
+        transition={{
+          staggerChildren: 0.1,
         }}
       >
-        <motion.span
-          layout
-          transition={{
-            staggerChildren: 0.1,
-          }}
-        >
-          {TEXT
-            .split("")
-            .map((char, index) => (
-              <motion.span
-                key={index}
-                className="inline-flex"
-                layout
-                animate={{
-                  opacity: [0, 1],
-                  x: letterPositions[index]?.position.x || 0,
-                  y: letterPositions[index]?.position.y || 0,
-                }}
-                transition={{
-                  duration: 0.1,
-                }}
-              >
-                {char === " " ? "\u00A0" : char}
-              </motion.span>
-            ))}
-        </motion.span>
-      </div>
-    </a>
+        {TEXT
+          .split("")
+          .map((char, index) => (
+            <motion.span
+              key={index}
+              className="inline-flex"
+              layout
+              animate={{
+                opacity: [0, 1],
+                x: letterPositions[index]?.position.x || 0,
+                y: letterPositions[index]?.position.y || 0,
+              }}
+              transition={{
+                duration: 0.1,
+              }}
+            >
+              {char === " " ? "\u00A0" : char}
+            </motion.span>
+          ))}
+      </motion.span>
+    </div>
   )
 }
 

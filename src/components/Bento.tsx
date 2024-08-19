@@ -7,7 +7,7 @@ import VijayTallImage from "./Vijay/VijayTallImage";
 import VijayHeader from "./Vijay/VijayHeader";
 import VijayHeaderBig from "./Vijay/VijayHeaderBig";
 import GamesHeader from "./Games/GamesHeader";
-import Video from "./MusicVideo";
+import Video from "./DailyDungeonFallback";
 import LinkedInIcon from "./LinkedInIcon";
 import ThreadsIcon from "./ThreadsIcon";
 import Description from "./Vijay/Description";

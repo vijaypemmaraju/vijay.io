@@ -11,7 +11,7 @@ const DailyDungeonIframe: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
     {isMobile && <DailyDungeonFallback />}
     {!isMobile && (
       <iframe
-        src="http://dailydungeon.net?demo=true"
+        src="https://dailydungeon.net?demo=true"
         width="100%"
         height="100%"
         className="pointer-events-none"

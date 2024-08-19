@@ -2,8 +2,7 @@ import type { FC } from "react";
 import type { ItemProps } from "../types";
 
 const DailyDungeonIframe: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
-  <a
-    href="/daily-dungeon"
+  <span
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
@@ -11,11 +10,9 @@ const DailyDungeonIframe: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
       src="http://dailydungeon.net?demo=true"
       width="100%"
       height="100%"
-      frameBorder="0"
-      scrolling="no"
       className="pointer-events-none"
     />
-  </a>
+  </span>
 );
 
 DailyDungeonIframe.displayName = "DailyDungeonIframe";

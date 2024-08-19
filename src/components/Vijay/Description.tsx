@@ -51,7 +51,7 @@ const useStore = create<Store>((set, get) => ({
         y: position.y + velocity.y,
       };
 
-      if (newPosition.x < -30 || newPosition.x > 30) {
+      if (newPosition.x < -25 || newPosition.x > 25) {
         velocity.x = -velocity.x;
       }
 

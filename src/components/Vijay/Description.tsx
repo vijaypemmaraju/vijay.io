@@ -16,10 +16,17 @@ type Store = {
 
 type LetterPosition = {
   position: { x: number; y: number };
+  originalPosition: { x: number; y: number };
   velocity: { x: number; y: number };
 };
 
 const TEXT = "Software Engineer • Game Developer • Musician";
+
+let mousePosition = { x: 0, y: 0 };
+
+document.addEventListener("mousemove", (event) => {
+  mousePosition = { x: event.clientX, y: event.clientY };
+});
 
 const useStore = create<Store>((set, get) => ({
   ticks: 0,
@@ -39,11 +46,18 @@ const useStore = create<Store>((set, get) => ({
     const { ticks, letterPositions } = state;
     const newLetterPositions = TEXT.split("").map((_, index) => {
       const velocity = letterPositions[index]?.velocity || { x: Math.random() * 2 - 1, y: Math.random() * 2 - 1 };
+      const parentBoundingBox = document.getElementById("description")?.getBoundingClientRect();
+      const letterBoundingBox = document.getElementById(`char-${index}`)?.getBoundingClientRect();
+      const relativePosition = {
+        x: (letterBoundingBox?.x || 0) - (parentBoundingBox?.x || 0),
+        y: (letterBoundingBox?.y || 0) - (parentBoundingBox?.y || 0),
+      };
+      const originalPosition = letterPositions[index]?.originalPosition || relativePosition;
       const magnitude = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
       velocity.x /= magnitude;
       velocity.y /= magnitude;
-      velocity.x *= 1.5;
-      velocity.y *= 1.5;
+      velocity.x *= 1.8;
+      velocity.y *= 1.8;
       const position = letterPositions[index]?.position || { x: 0, y: 0 };
 
       const newPosition = {
@@ -51,16 +65,43 @@ const useStore = create<Store>((set, get) => ({
         y: position.y + velocity.y,
       };
 
-      if (newPosition.x < -25 || newPosition.x > 25) {
+      const newRelativePosition = {
+        x: relativePosition.x + velocity.x,
+        y: relativePosition.y + velocity.y,
+      };
+
+      if (newRelativePosition.x < 0) {
         velocity.x = -velocity.x;
+        newPosition.x += -newRelativePosition.x;
       }
 
-      if (newPosition.y < -60 || newPosition.y > 60) {
-        velocity.y = -velocity.y;
+      if (newRelativePosition.x > (parentBoundingBox?.width || 0) - (letterBoundingBox?.width || 0)) {
+        velocity.x = -velocity.x;
+        newPosition.x -= (newRelativePosition.x - (parentBoundingBox?.width || 0) + (letterBoundingBox?.width || 0));
       }
+
+      if (newRelativePosition.y < 0) {
+        velocity.y = -velocity.y;
+        newPosition.y += -newRelativePosition.y;
+      }
+
+      if (newRelativePosition.y > (parentBoundingBox?.height || 0) - (letterBoundingBox?.height || 0)) {
+        velocity.y = -velocity.y;
+        newPosition.y -= (newRelativePosition.y - (parentBoundingBox?.height || 0) + (letterBoundingBox?.height || 0));
+      }
+
+      // add slight attraction to mouse
+      const dx = mousePosition.x - (parentBoundingBox?.x || 0) - newRelativePosition.x;
+      const dy = mousePosition.y - (parentBoundingBox?.y || 0) - newRelativePosition.y;
+      const distance = Math.sqrt(dx ** 2 + dy ** 2);
+      const force = 0.05;
+      velocity.x += dx / distance * force;
+      velocity.y += dy / distance * force;
+
 
       return {
         position: newPosition,
+        originalPosition,
         velocity,
       };
     });
@@ -90,12 +131,10 @@ const Description: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
 
   const [isHovered, setIsHovered] = useState(false);
 
-  console.log(letterPositions);
-
   return (
     <div
       className="flex flex-col w-full h-full justify-center items-center bg-secondary text-secondary-content text-[15px] hover:border-2 hover:border-white hover:rounded-lg transition-all"
-      id="vijay"
+      id="description"
       onMouseEnter={() => {
         setIsHovered(true);
         onMouseEnter?.();
@@ -119,6 +158,7 @@ const Description: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
             <motion.span
               key={index}
               className="inline-flex"
+              id={`char-${index}`}
               layout
               animate={{
                 opacity: [0, 1],

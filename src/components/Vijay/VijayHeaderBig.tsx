@@ -10,7 +10,7 @@ const VijayHeaderBig: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
 
   return (
     <div
-      className={cx("flex flex-col w-full h-full justify-center items-center text-white hover:border-2 hover:border-white hover:rounded-lg transition-all duration-100",
+      className={cx("flex flex-col w-full h-full justify-center items-center text-primary-content bg-primary hover:border-2 hover:border-white hover:rounded-lg transition-all duration-100",
         isHovered ? "text-base font-extralight" : "text-xl font-bold"
       )}
       id="vijay"

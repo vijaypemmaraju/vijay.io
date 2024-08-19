@@ -5,13 +5,13 @@ import type { ItemProps } from "./types";
 const LinkedInIcon: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
   <a
     href="https://www.linkedin.com/in/vijay-pemmaraju"
-    className="flex w-full h-full text-[128px] justify-center items-center"
+    className="flex w-full h-full text-[128px] justify-center items-center bg-neutral"
     id="LinkedInIcon"
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
   >
     <motion.svg
-      className="fill-white"
+      className="fill-neutral-content"
       xmlns="http://www.w3.org/2000/svg"
       width="24"
       height="24"

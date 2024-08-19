@@ -12,7 +12,7 @@ const ThreadsIcon: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
       href="https://threads.net/@hi.im.vijay"
       target="_blank"
       rel="noopener noreferrer"
-      className="flex flex-col w-full h-full justify-center items-center gap-0"
+      className="flex flex-col w-full h-full justify-center items-center gap-0 bg-neutral"
       id="ThreadsIcon"
       onMouseEnter={() => {
         setIsHovered(true);
@@ -28,7 +28,7 @@ const ThreadsIcon: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
         aria-label="Threads"
         viewBox="0 0 192 192"
         xmlns="http://www.w3.org/2000/svg"
-        className="fill-white scale-50"
+        className="fill-neutral-content scale-50"
         initial={{ opacity: 0, scale: 0, rotate: -180 }}
         animate={{ opacity: 1, scale: 0.5, rotate: 0 }}
         whileHover={{ scale: 0.55, rotate: [0, -10, 10, 0] }}

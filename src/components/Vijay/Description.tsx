@@ -23,10 +23,24 @@ type LetterPosition = {
 const TEXT = "Software Engineer • Game Developer • Musician";
 
 let mousePosition = { x: 0, y: 0 };
-
+let lastMouseClick = { x: 0, y: 0 };
+let clickPower = 0;
 document.addEventListener("mousemove", (event) => {
   mousePosition = { x: event.clientX, y: event.clientY };
 });
+
+document.addEventListener("click", (event) => {
+  lastMouseClick = { x: event.clientX, y: event.clientY };
+  clickPower = 1;
+});
+
+setInterval(() => {
+  clickPower -= 0.01;
+
+  if (clickPower < 0) {
+    clickPower = 0;
+  }
+}, 1);
 
 const useStore = create<Store>((set, get) => ({
   ticks: 0,
@@ -54,10 +68,11 @@ const useStore = create<Store>((set, get) => ({
       };
       const originalPosition = letterPositions[index]?.originalPosition || relativePosition;
       const magnitude = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
-      velocity.x /= magnitude;
-      velocity.y /= magnitude;
-      velocity.x *= 1.8;
-      velocity.y *= 1.8;
+      if (magnitude > 10) {
+        velocity.x = velocity.x / magnitude * 10;
+        velocity.y = velocity.y / magnitude * 10;
+      }
+
       const position = letterPositions[index]?.position || { x: 0, y: 0 };
 
       const newPosition = {
@@ -98,6 +113,24 @@ const useStore = create<Store>((set, get) => ({
       velocity.x += dx / distance * force;
       velocity.y += dy / distance * force;
 
+      // add slight repulsion from last mouse click
+      const dx2 = lastMouseClick.x - (parentBoundingBox?.x || 0) - newRelativePosition.x;
+      const dy2 = lastMouseClick.y - (parentBoundingBox?.y || 0) - newRelativePosition.y;
+      const distance2 = Math.sqrt(dx2 ** 2 + dy2 ** 2);
+      const force2 = 10;
+      velocity.x -= dx2 / distance2 * force2 * clickPower;
+      velocity.y -= dy2 / distance2 * force2 * clickPower
+
+      // gradually decay velocity until the magnitude is 2
+      const decay = 0.99;
+      velocity.x *= decay;
+      velocity.y *= decay;
+
+      while (Math.sqrt(velocity.x ** 2 + velocity.y ** 2) < 2) {
+        velocity.x *= 1.01;
+        velocity.y *= 1.01;
+      }
+
 
       return {
         position: newPosition,
@@ -133,7 +166,7 @@ const Description: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
 
   return (
     <div
-      className="flex flex-col w-full h-full justify-center items-center bg-secondary text-secondary-content text-[15px] hover:border-2 hover:border-white hover:rounded-lg transition-all"
+      className="flex flex-col w-full h-full justify-center items-center bg-secondary text-secondary-content text-[15px] hover:border-2 hover:border-white hover:rounded-lg transition-all select-none"
       id="description"
       onMouseEnter={() => {
         setIsHovered(true);

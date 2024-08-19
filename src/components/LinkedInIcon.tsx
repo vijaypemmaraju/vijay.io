@@ -5,7 +5,7 @@ import type { ItemProps } from "./types";
 const LinkedInIcon: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
   <a
     href="https://www.linkedin.com/in/vijay-pemmaraju"
-    className="flex w-full h-full text-[128px] justify-center items-center bg-neutral"
+    className="flex w-full h-full text-[128px] justify-center items-center bg-neutral hover:border-2 hover:border-white hover:rounded-lg"
     id="LinkedInIcon"
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}

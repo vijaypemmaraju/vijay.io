@@ -10,8 +10,7 @@ const VijayHeaderBig: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
 
   return (
     <div
-      className={cx("flex flex-col w-full h-full justify-center items-center text-primary-content bg-primary hover:border-2 hover:border-white hover:rounded-lg transition-all duration-100",
-        isHovered ? "text-base font-extralight" : "text-xl font-bold"
+      className={cx("flex flex-col w-full h-full justify-center items-center text-primary-content bg-primary hover:border-2 hover:border-white hover:rounded-lg",
       )}
       id="vijay"
       onMouseEnter={() => {
@@ -23,11 +22,13 @@ const VijayHeaderBig: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
         onMouseLeave?.();
       }}
     >
-      <motion.div animate={{ opacity: [0, 1], y: [-50, 0] }} style={{
-        'view-transition-name': 'vijay',
-      }}>
-        {isHovered && 'VIH-jay PEH-muh-RAH-joo'}
-        {!isHovered && 'Vijay Pemmaraju'}
+      <motion.div animate={{ opacity: [0, 1], y: [-50, 0] }} className="flex flex-col justify-center items-center text-center gap-0" layout>
+        <motion.div className="text-2xl font-bold" layout>
+          {'Vijay Pemmaraju'}
+        </motion.div>
+        {isHovered && <motion.div layout className="text-sm font-extralight" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          {'VIH-jay PEH-muh-RAH-joo'}
+        </motion.div>}
       </motion.div>
     </div>
   )

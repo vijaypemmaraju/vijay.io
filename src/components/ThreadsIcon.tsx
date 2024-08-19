@@ -12,7 +12,7 @@ const ThreadsIcon: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
       href="https://threads.net/@hi.im.vijay"
       target="_blank"
       rel="noopener noreferrer"
-      className="flex flex-col w-full h-full justify-center items-center gap-0 bg-neutral"
+      className="flex flex-col w-full h-full justify-center items-center gap-0 bg-neutral hover:border-2 hover:border-white hover:rounded-lg"
       id="ThreadsIcon"
       onMouseEnter={() => {
         setIsHovered(true);

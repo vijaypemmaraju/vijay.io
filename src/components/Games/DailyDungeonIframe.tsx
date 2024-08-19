@@ -14,7 +14,7 @@ const DailyDungeonIframe: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
         src="https://dailydungeon.net?demo=true"
         width="100%"
         height="100%"
-        className="pointer-events-none"
+        className="hover:border-2 hover:border-white hover:rounded-lg box-border"
       />
     )}
   </span>

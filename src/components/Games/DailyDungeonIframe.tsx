@@ -4,7 +4,7 @@ import type { FC } from "react";
 import type { ItemProps } from "../types";
 import DailyDungeonFallback from "../DailyDungeonFallback";
 
-const isMobile = /Mobi/.test(navigator.userAgent);
+const isMobile = false;
 
 const DailyDungeonIframe: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => (
   <span onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>

@@ -9,7 +9,7 @@ const Vijay: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
   return (
     <div
       className={cx(
-        "flex w-full h-full justify-center items-center font-bold text-accent-content bg-accent hover:border-2 hover:border-white hover:rounded-lg transition-all",
+        "flex w-full h-full justify-center items-center font-bold text-accent-content bg-accent hover:border-2 hover:border-white hover:rounded-lg transition-all select-none",
         isHovered ? "text-5xl" : "text-4xl"
       )}
       id="vijay"

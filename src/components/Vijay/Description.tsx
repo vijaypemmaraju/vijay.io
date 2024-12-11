@@ -20,7 +20,7 @@ type LetterPosition = {
   velocity: { x: number; y: number };
 };
 
-const TEXT = "Software Engineer • Game Developer • Musician";
+const TEXT = "software engineer • game developer • musician";
 
 let mousePosition = { x: 0, y: 0 };
 let lastMouseClick = { x: 0, y: 0 };

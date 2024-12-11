@@ -40,7 +40,7 @@ const ThreadsIcon: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
       <motion.div layout
         initial={{ opacity: 0, y: 0, height: 0 }}
         animate={isHovered ? { opacity: 1, y: -12, height: "auto" } : { opacity: 0, y: -10, height: 0 }}
-        className="text-xs">@hi.im.vijay</motion.div>
+        className="text-xs lowercase">@hi.im.vijay</motion.div>
     </motion.a>
   );
 

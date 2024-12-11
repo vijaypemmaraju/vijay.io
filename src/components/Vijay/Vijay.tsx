@@ -28,7 +28,7 @@ const Vijay: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
           staggerChildren: 0.1,
         }}
       >
-        {(isHovered ? "Hi." : "Hi.")
+        {(isHovered ? "hi." : "hi.")
           .split("")
           .map((char, index) => (
             <motion.span

@@ -1,64 +1,123 @@
 import cx from "classnames";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import DailyDungeonIframe from "./Games/DailyDungeonIframe";
-import Empty from "./Empty";
 import Vijay from "./Vijay/Vijay";
-import VijayTallImage from "./Vijay/VijayTallImage";
-import VijayHeader from "./Vijay/VijayHeader";
 import VijayHeaderBig from "./Vijay/VijayHeaderBig";
-import GamesHeader from "./Games/GamesHeader";
-import Video from "./DailyDungeonFallback";
 import LinkedInIcon from "./LinkedInIcon";
 import ThreadsIcon from "./ThreadsIcon";
+import GitHubIcon from "./GitHubIcon";
 import Description from "./Vijay/Description";
-import MusicIcon from "./MusicIcon";
-import VijayFooter from "./Vijay/VijayFooter";
-import StreamTypers from "./StreamTypers";
+import ProjectCard from "./ProjectCard";
+import projects from "../data/projects";
 
-const Items = [Empty, Empty, Empty, Vijay, Empty, Empty, Empty];
+type BentoItem = {
+  key: string;
+  component: React.ReactNode;
+  className: string;
+};
 
 const Bento = () => {
-	const [currentHovered, setCurrentHovered] = useState<string | null>(null);
+  const [currentHovered, setCurrentHovered] = useState<string | null>(null);
 
-	let Items = [VijayHeaderBig, DailyDungeonIframe, ThreadsIcon, Vijay, LinkedInIcon, Description];
-	let itemClassNames = ["col-span-2", "", "", "", "", "col-span-3"];
+  const handleEnter = (name: string) => () => setCurrentHovered(name);
+  const handleLeave = () => setCurrentHovered(null);
 
-	// if (currentHovered === "Vijay") {
-	// itemClassNames = ["col-span-2", "row-span-3", "col-span-2", "col-span-2"];
-	// Items = [VijayHeaderBig, VijayTallImage, Vijay, VijayFooter]
-	// }
+  const heroItems: BentoItem[] = [
+    {
+      key: "header",
+      component: (
+        <VijayHeaderBig
+          onMouseEnter={handleEnter("header")}
+          onMouseLeave={handleLeave}
+        />
+      ),
+      className: "col-span-2 row-span-1",
+    },
+    {
+      key: "threads",
+      component: (
+        <ThreadsIcon
+          onMouseEnter={handleEnter("threads")}
+          onMouseLeave={handleLeave}
+        />
+      ),
+      className: "col-span-1 row-span-1",
+    },
+    {
+      key: "linkedin",
+      component: (
+        <LinkedInIcon
+          onMouseEnter={handleEnter("linkedin")}
+          onMouseLeave={handleLeave}
+        />
+      ),
+      className: "col-span-1 row-span-1",
+    },
+    {
+      key: "hi",
+      component: (
+        <Vijay
+          onMouseEnter={handleEnter("hi")}
+          onMouseLeave={handleLeave}
+        />
+      ),
+      className: "col-span-1 row-span-1",
+    },
+    {
+      key: "github",
+      component: (
+        <GitHubIcon
+          onMouseEnter={handleEnter("github")}
+          onMouseLeave={handleLeave}
+        />
+      ),
+      className: "col-span-1 row-span-1",
+    },
+    {
+      key: "description",
+      component: (
+        <Description
+          onMouseEnter={handleEnter("description")}
+          onMouseLeave={handleLeave}
+        />
+      ),
+      className: "col-span-2 row-span-1",
+    },
+  ];
 
-	// if (currentHovered === "DailyDungeonIframe") {
-	// 	itemClassNames = ["m-1", "col-span-2", "col-span-3", "col-span-3"];
-	// 	Items = [DailyDungeonIframe, GamesHeader, Empty, Empty];
-	// }
+  const projectItems: BentoItem[] = projects.map((project) => ({
+    key: `project-${project.title}`,
+    component: (
+      <ProjectCard
+        project={project}
+        onMouseEnter={handleEnter(project.title)}
+        onMouseLeave={handleLeave}
+      />
+    ),
+    className: project.span === "2" ? "col-span-2 row-span-1" : "col-span-1 row-span-1",
+  }));
 
-	return (
-		<div
-			className={cx(
-				"grid auto-rows-[133px] grid-cols-3 transition-all duration-300 ease-in-out w-full",
-				// currentHovered ? "gap-0" : "gap-3"
-			)}
-		>
-			{Items.map((Item, index) => {
-				return (
-					<div
-						className={cx(
-							"row-span-1 border-slate-400/10 bg-neutral-100 dark:bg-neutral-900",
-							// !currentHovered && 'border-2 rounded-xl',
-							itemClassNames[index]
-						)}
-					>
-						<Item
-							key={index}
-							onMouseEnter={() => setCurrentHovered(Item.displayName || "")}
-							onMouseLeave={() => setCurrentHovered(null)}
-						/>
-					</div>
-				);
-			})}
-		</div>
-	);
+  const allItems = [...heroItems, ...projectItems];
+
+  return (
+    <div className="w-full max-w-4xl mx-auto px-4">
+      <div
+        className="grid auto-rows-[140px] grid-cols-2 sm:grid-cols-4 gap-1.5 transition-all duration-300 ease-in-out w-full"
+      >
+        {allItems.map((item) => (
+          <div
+            key={item.key}
+            className={cx(
+              "row-span-1 rounded-lg overflow-hidden",
+              item.className
+            )}
+          >
+            {item.component}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Bento;

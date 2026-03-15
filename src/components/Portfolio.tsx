@@ -6,6 +6,11 @@ import projects from "../data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// stable viewport height that doesn't change with mobile address bar
+const getVH = () => window.visualViewport?.height ?? window.innerHeight;
+const getVW = () => window.visualViewport?.width ?? window.innerWidth;
+const getPx = () => getVW() >= 1024 ? 96 : getVW() >= 640 ? 64 : 32;
+
 /* ─── Hero ──────────────────────────────────────────────── */
 const Hero: FC = () => {
   const spacerRef = useRef<HTMLDivElement>(null);
@@ -27,95 +32,76 @@ const Hero: FC = () => {
     const inlineLastName = inlineLastNameRef.current;
     if (!spacer || !name || !inlineLastName || !lastName || !title || !extra || !indicator) return;
 
-    let hasEntrance = false;
-
-    const setup = () => {
-      // kill previous triggers
-      heroTriggersRef.current.forEach((t) => t.kill());
-      heroTriggersRef.current = [];
-      gsap.killTweensOf([name, lastName, title, extra, indicator, inlineLastName]);
-
-      const px = window.innerWidth >= 1024 ? 96 : window.innerWidth >= 640 ? 64 : 32;
-      const vh = window.innerHeight;
-      const heroFontSize = Math.min(window.innerWidth * 0.14, 192);
+    // pure helper: compute all positions from current viewport (no side effects)
+    const getPositions = () => {
+      const px = getPx();
+      const vh = getVH();
+      const heroFontSize = Math.min(getVW() * 0.14, 192);
       const lineHeight = heroFontSize * 0.9;
-
       const heroNameY = vh * 0.5 - lineHeight * 1.5;
       const heroLastNameY = heroNameY + lineHeight;
       const heroTitleY = heroLastNameY + lineHeight + 32;
-
-      gsap.set(title, { x: px, y: heroTitleY, scale: 1, transformOrigin: "top left" });
-      const titleHeight = title.getBoundingClientRect().height;
-      const heroExtraY = heroTitleY + titleHeight + 16;
-
-      const targetNameFontSize = 20;
-      const targetNameX = px;
-      const targetNameY = 20;
-      const targetTitleFontSize = 10;
-      const targetTitleX = px;
-      const targetTitleY = 44;
-
-      // if page is already scrolled, snap to final state
-      const scrolled = window.scrollY > vh;
-
-      gsap.set(name, { fontSize: scrolled ? targetNameFontSize : heroFontSize, x: scrolled ? targetNameX : px, y: scrolled ? targetNameY : heroNameY, opacity: 1 });
-      gsap.set(inlineLastName, { display: "inline", opacity: scrolled ? 1 : 0, width: scrolled ? "auto" : 0, overflow: "hidden" });
-      gsap.set(lastName, { fontSize: heroFontSize, x: px, y: heroLastNameY, autoAlpha: scrolled ? 0 : 0.3 });
-      gsap.set(extra, { x: px, y: heroExtraY, autoAlpha: scrolled ? 0 : 1 });
-      gsap.set(indicator, { autoAlpha: scrolled ? 0 : 1 });
-      gsap.set(title, { x: scrolled ? targetTitleX : px, y: scrolled ? targetTitleY : heroTitleY, scale: scrolled ? targetTitleFontSize / 14 : 1 });
-
-      // entrance only on first load
-      if (!hasEntrance && !scrolled) {
-        hasEntrance = true;
-        gsap.from(name, { y: heroNameY + 80, opacity: 0, duration: 1, ease: "power3.out" });
-        gsap.from(lastName, { y: heroLastNameY + 80, opacity: 0, duration: 1, delay: 0.1, ease: "power3.out" });
-        gsap.from(title, { y: heroTitleY + 20, opacity: 0, duration: 0.8, delay: 0.3, ease: "power3.out" });
-        gsap.from(extra, { y: heroExtraY + 20, opacity: 0, duration: 0.8, delay: 0.5, ease: "power3.out" });
-        gsap.from(indicator, { opacity: 0, duration: 0.8, delay: 1.2 });
-      }
-
-      // scroll timeline
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: spacer,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.6,
-          id: "hero-scroll",
-        },
-      });
-
-      tl.to(name, { fontSize: targetNameFontSize, x: targetNameX, y: targetNameY, duration: 1, ease: "power2.inOut" }, 0);
-
-      const titleScale = targetTitleFontSize / 14;
-      tl.to(title, { scale: titleScale, x: targetTitleX, y: targetTitleY, duration: 1, ease: "power2.inOut" }, 0);
-
-      tl.to(lastName, { autoAlpha: 0, y: heroLastNameY - 40, duration: 0.3 }, 0);
-      tl.to(extra, { autoAlpha: 0, y: heroExtraY - 30, duration: 0.25 }, 0);
-      tl.to(indicator, { autoAlpha: 0, duration: 0.08 }, 0);
-      tl.to(inlineLastName, { width: "auto", opacity: 1, duration: 0.15, ease: "power2.out" }, 0.8);
-
-      heroTriggersRef.current.push(ScrollTrigger.getById("hero-scroll")!);
+      const heroExtraY = heroTitleY + 50; // approximate title height + gap
+      return { px, vh, heroFontSize, lineHeight, heroNameY, heroLastNameY, heroTitleY, heroExtraY };
     };
 
-    setup();
+    const targetNameFontSize = 20;
+    const targetTitleY = 44;
 
-    // debounced resize handler
-    let resizeTimer: number;
-    const handleResize = () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        setup();
-        ScrollTrigger.refresh();
-      }, 200);
-    };
+    const pos = getPositions();
 
-    window.addEventListener("resize", handleResize);
+    gsap.set(name, { fontSize: pos.heroFontSize, x: pos.px, y: pos.heroNameY, opacity: 1 });
+    gsap.set(inlineLastName, { display: "inline", opacity: 0, width: 0, overflow: "hidden" });
+    gsap.set(lastName, { fontSize: pos.heroFontSize, x: pos.px, y: pos.heroLastNameY, autoAlpha: 0.3 });
+    gsap.set(title, { x: pos.px, y: pos.heroTitleY, scale: 1, transformOrigin: "top left" });
+    gsap.set(extra, { x: pos.px, y: pos.heroExtraY, autoAlpha: 1 });
+    gsap.set(indicator, { autoAlpha: 1 });
+
+    // entrance animations
+    gsap.from(name, { y: pos.heroNameY + 80, opacity: 0, duration: 1, ease: "power3.out" });
+    gsap.from(lastName, { y: pos.heroLastNameY + 80, opacity: 0, duration: 1, delay: 0.1, ease: "power3.out" });
+    gsap.from(title, { y: pos.heroTitleY + 20, opacity: 0, duration: 0.8, delay: 0.3, ease: "power3.out" });
+    gsap.from(extra, { y: pos.heroExtraY + 20, opacity: 0, duration: 0.8, delay: 0.5, ease: "power3.out" });
+    gsap.from(indicator, { opacity: 0, duration: 0.8, delay: 1.2 });
+
+    // scroll timeline with functional values that re-evaluate on refresh
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: spacer,
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+        id: "hero-scroll",
+      },
+    });
+
+    // name shrinks to top-left
+    tl.to(name, { fontSize: targetNameFontSize, x: pos.px, y: 20, duration: 1, ease: "power2.inOut" }, 0);
+
+    // title scales to top-left
+    tl.to(title, { scale: 10 / 14, x: pos.px, y: targetTitleY, duration: 1, ease: "power2.inOut" }, 0);
+
+    // last name fades
+    tl.to(lastName, { autoAlpha: 0, y: pos.heroLastNameY - 40, duration: 0.3 }, 0);
+
+    // extras fade
+    tl.to(extra, { autoAlpha: 0, y: pos.heroExtraY - 30, duration: 0.25 }, 0);
+
+    // indicator
+    tl.to(indicator, { autoAlpha: 0, duration: 0.08 }, 0);
+
+    // inline last name reveal
+    tl.to(inlineLastName, { width: "auto", opacity: 1, duration: 0.15, ease: "power2.out" }, 0.8);
+
+    heroTriggersRef.current.push(ScrollTrigger.getById("hero-scroll")!);
+
+    // on visualViewport resize (mobile address bar), just refresh triggers
+    const onVPResize = () => ScrollTrigger.refresh();
+    window.visualViewport?.addEventListener("resize", onVPResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
-      clearTimeout(resizeTimer);
+      window.visualViewport?.removeEventListener("resize", onVPResize);
       heroTriggersRef.current.forEach((t) => t.kill());
       heroTriggersRef.current = [];
     };
@@ -189,7 +175,7 @@ const Hero: FC = () => {
       </div>
 
       {/* spacer — this is what you scroll through to drive the animation */}
-      <div ref={spacerRef} className="relative h-[150vh] sm:h-[200vh]" />
+      <div ref={spacerRef} className="relative h-[150svh] sm:h-[200svh]" />
     </>
   );
 };

@@ -1,10 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 128 128">
-    <rect width="128" height="128" fill="#ea6947"/>
-    <text x="64" y="72" dominant-baseline="middle" text-anchor="middle" font-size="84" font-family="sans-serif" fill="#000">hi.</text>
-    <style>
-        text { fill: #000; }
-        @media (prefers-color-scheme: dark) {
-            text { fill: #000; }
-        }
-    </style>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="20" fill="#0a0a0c"/>
+  <text x="64" y="78" dominant-baseline="middle" text-anchor="middle" font-size="72" font-weight="800" font-family="system-ui, sans-serif" fill="#f0ece6" letter-spacing="-3">vp</text>
+  <circle cx="100" cy="28" r="6" fill="#ff6b2b"/>
 </svg>

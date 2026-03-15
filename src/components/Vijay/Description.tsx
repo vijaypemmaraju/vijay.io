@@ -166,7 +166,7 @@ const Description: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
 
   return (
     <div
-      className="flex flex-col w-full h-full justify-center items-center bg-secondary text-secondary-content text-[15px] hover:border-2 hover:border-white hover:rounded-lg transition-all select-none"
+      className="flex flex-col w-full h-full justify-center items-center bg-white/[0.03] backdrop-blur-sm text-white/70 text-[13px] sm:text-[15px] font-light tracking-[0.05em] lowercase transition-all select-none border border-white/[0.06]"
       id="description"
       onMouseEnter={() => {
         setIsHovered(true);

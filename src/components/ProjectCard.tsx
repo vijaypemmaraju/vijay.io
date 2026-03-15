@@ -5,10 +5,12 @@ import type { ItemProps } from "./types";
 
 type ProjectCardProps = ItemProps & {
   project: Project;
+  index: number;
 };
 
 const ProjectCard: FC<ProjectCardProps> = ({
   project,
+  index,
   onMouseEnter,
   onMouseLeave,
 }) => {
@@ -21,7 +23,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
       {...(project.url
         ? { href: project.url, target: "_blank", rel: "noopener noreferrer" }
         : {})}
-      className="flex flex-col w-full h-full justify-end p-4 bg-neutral-800 hover:border hover:border-white/20 hover:rounded-lg transition-all cursor-pointer group overflow-hidden relative"
+      className="flex flex-col w-full h-full justify-between p-5 bg-white/[0.03] border border-white/[0.06] transition-all duration-500 cursor-pointer group overflow-hidden relative hover:bg-white/[0.06] hover:border-white/[0.12]"
       onMouseEnter={() => {
         setIsHovered(true);
         onMouseEnter?.();
@@ -32,41 +34,56 @@ const ProjectCard: FC<ProjectCardProps> = ({
       }}
     >
       {project.image && (
-        <div className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity">
+        <motion.div
+          className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-700"
+          initial={{ scale: 1.1 }}
+          whileHover={{ scale: 1 }}
+        >
           <img
             src={project.image}
             alt=""
             className="w-full h-full object-cover"
           />
-        </div>
+        </motion.div>
       )}
-      <div className="relative z-10">
-        <motion.div
-          className="text-lg font-semibold text-white mb-1"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
+
+      <div className="relative z-10 flex justify-between items-start">
+        <motion.span
+          className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/20"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
         >
+          {String(index + 1).padStart(2, "0")}
+        </motion.span>
+        {project.url && (
+          <motion.span
+            className="text-white/0 group-hover:text-white/40 transition-all duration-500 text-xs -translate-x-2 group-hover:translate-x-0"
+          >
+            ↗
+          </motion.span>
+        )}
+      </div>
+
+      <div className="relative z-10">
+        <motion.div
+          className="text-base sm:text-lg font-semibold text-white/90 lowercase tracking-[-0.01em] mb-1"
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+        >
           {project.title}
-          {project.url && (
-            <motion.span
-              className="inline-block ml-1.5 opacity-0 group-hover:opacity-60 transition-opacity text-sm"
-              aria-hidden
-            >
-              ↗
-            </motion.span>
-          )}
         </motion.div>
         <motion.p
-          className="text-sm text-neutral-400 mb-2 leading-snug"
-          initial={{ opacity: 0, y: 10 }}
+          className="text-xs text-white/30 mb-3 leading-relaxed lowercase"
+          initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
+          transition={{ delay: 0.15, duration: 0.5 }}
         >
           {project.description}
         </motion.p>
         <motion.div
-          className="flex gap-1.5 flex-wrap"
+          className="flex gap-2 flex-wrap"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
@@ -74,7 +91,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="text-xs px-2 py-0.5 rounded-full bg-white/10 text-neutral-300"
+              className="text-[10px] font-mono uppercase tracking-[0.1em] text-white/20 group-hover:text-white/40 transition-colors duration-500"
             >
               {tag}
             </span>

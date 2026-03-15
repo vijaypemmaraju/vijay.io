@@ -3,33 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import Bento from "../components/Bento";
 ---
 
-<Layout title="Vijay Pemmaraju">
-  <main class="flex justify-center items-start min-h-screen text-white py-12 sm:py-20">
+<Layout title="vijay pemmaraju">
+  <main class="flex justify-center items-start min-h-screen text-white py-16 sm:py-24">
     <Bento client:only />
   </main>
-
-  <style>
-    /* The typing effect */
-    @keyframes typing {
-      from {
-        width: 0;
-      }
-
-      to {
-        width: 100%;
-      }
-    }
-
-    /* The typewriter cursor effect */
-    @keyframes blink-caret {
-      from,
-      to {
-        border-color: transparent;
-      }
-
-      50% {
-        border-color: orange;
-      }
-    }
-  </style>
 </Layout>

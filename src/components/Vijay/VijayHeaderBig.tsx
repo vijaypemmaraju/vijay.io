@@ -10,9 +10,10 @@ const VijayHeaderBig: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
 
   return (
     <div
-      className={cx("flex flex-col w-full h-full justify-center items-center text-primary-content bg-primary hover:border-2 hover:border-white hover:rounded-lg",
+      className={cx(
+        "flex flex-col w-full h-full justify-end items-start p-6 sm:p-8 bg-transparent overflow-hidden relative group",
       )}
-      id="vijay"
+      id="vijay-header"
       onMouseEnter={() => {
         setIsHovered(true);
         onMouseEnter?.();
@@ -22,25 +23,42 @@ const VijayHeaderBig: FC<ItemProps> = ({ onMouseEnter, onMouseLeave }) => {
         onMouseLeave?.();
       }}
     >
-      <motion.div animate={{ opacity: [0, 1], y: [-50, 0] }} className="flex flex-col justify-center items-center text-center gap-0" layout>
-        <motion.div className="text-2xl font-bold lowercase" layout>
-          {'vijay pemmaraju'}
-        </motion.div>
-        {isHovered && <motion.div
+      <motion.div
+        animate={{ opacity: [0, 1], x: [-30, 0] }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="flex flex-col justify-end items-start gap-1"
+        layout
+      >
+        <motion.div
+          className="text-[clamp(2.5rem,6vw,5rem)] font-black lowercase leading-[0.85] tracking-[-0.04em] text-white"
           layout
-          className="text-sm font-extralight lowercase"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          dangerouslySetInnerHTML={{
-            __html: '<span class="font-bold">vih</span>-jay <span class="font-bold">peh</span>-muh-<span class="font-bold">rah</span>-joo'
-          }}
-        />}
+        >
+          vijay
+        </motion.div>
+        <motion.div
+          className="text-[clamp(2.5rem,6vw,5rem)] font-black lowercase leading-[0.85] tracking-[-0.04em] text-white/40"
+          layout
+        >
+          pemmaraju
+        </motion.div>
+        {isHovered && (
+          <motion.div
+            layout
+            className="text-[10px] font-light uppercase tracking-[0.3em] text-white/30 mt-3 font-mono"
+            initial={{ opacity: 0, y: 5 }}
+            animate={{ opacity: 1, y: 0 }}
+            dangerouslySetInnerHTML={{
+              __html:
+                '<span class="text-white/60">vih</span>-jay <span class="text-white/60">peh</span>-muh-<span class="text-white/60">rah</span>-joo',
+            }}
+          />
+        )}
       </motion.div>
+      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-white/[0.03] to-transparent pointer-events-none" />
     </div>
-  )
-}
+  );
+};
 
 VijayHeaderBig.displayName = "VijayHeaderBig";
-
 
 export default VijayHeaderBig;

@@ -11,13 +11,13 @@ const { title } = Astro.props;
 <html lang="en" data-theme="business">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="vijay pemmaraju — software engineer, game developer, musician" />
+    <meta name="description" content="vijay pemmaraju — forward deployed engineer @ elevenlabs" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=IBM+Plex+Mono:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
 
@@ -25,7 +25,7 @@ const { title } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="bg-[#0a0a0a] antialiased">
+  <body class="bg-[#0a0a0c] antialiased">
     <slot />
 
     <!-- noise texture overlay -->
@@ -33,39 +33,72 @@ const { title } = Astro.props;
 
     <style is:global>
       :root {
-        --accent: 136, 58, 234;
-        --accent-light: 224, 204, 250;
-        --accent-dark: 49, 10, 101;
+        --accent: #ff6b2b;
+        --bg: #0a0a0c;
+        --text: #f0ece6;
+        --text-dim: rgba(240, 236, 230, 0.4);
+        --text-muted: rgba(240, 236, 230, 0.15);
+        --border: rgba(240, 236, 230, 0.06);
+        --surface: rgba(240, 236, 230, 0.025);
       }
       html {
-        font-family: "Inter", "Poppins", sans-serif;
-        background: #0a0a0a;
+        font-family: "DM Sans", system-ui, sans-serif;
+        background: var(--bg);
+        color: var(--text);
       }
       code {
-        font-family: "Space Mono", Menlo, Monaco, monospace;
+        font-family: "IBM Plex Mono", Menlo, Monaco, monospace;
       }
 
-      /* noise grain overlay */
       .noise-overlay {
         position: fixed;
         inset: 0;
         z-index: 9999;
         pointer-events: none;
-        opacity: 0.035;
+        opacity: 0.04;
         background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         background-repeat: repeat;
         background-size: 128px 128px;
       }
 
-      /* smooth scrolling */
       html {
         scroll-behavior: smooth;
       }
 
-      /* custom selection color */
       ::selection {
-        background: rgba(255, 255, 255, 0.15);
+        background: rgba(255, 107, 43, 0.25);
         color: white;
+      }
+
+      .font-display {
+        font-family: "Bricolage Grotesque", system-ui, sans-serif;
+      }
+
+      .font-mono {
+        font-family: "IBM Plex Mono", Menlo, Monaco, monospace;
+      }
+
+      /* project card animated backgrounds */
+      @keyframes holoShimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+      }
+
+      @keyframes nodeFloat {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(3px, -4px); }
+        50% { transform: translate(-2px, 3px); }
+        75% { transform: translate(4px, 2px); }
+      }
+
+      @keyframes pulseGlow {
+        0%, 100% { opacity: 0.03; }
+        50% { opacity: 0.08; }
+      }
+
+      @keyframes gridScan {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
       }
     </style>
   </body>

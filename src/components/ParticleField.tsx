@@ -40,7 +40,6 @@ const ParticleField: FC = () => {
       originX: 0, originY: 0, // where thumb first touched
       dx: 0, dy: 0, // current offset from origin
     };
-    const fireTouch = { active: false, touchId: -1, x: 0, y: 0 };
 
     const particles: Particle[] = [];
     const boids: Boid[] = [];
@@ -50,6 +49,7 @@ const ParticleField: FC = () => {
     const keys: Record<string, boolean> = {};
     let hintAlpha = 0.6;
     let hintFadeStarted = false;
+    let morphT = 0; // 0 = play triangle, 1 = pause bars
 
     const ship: Ship = {
       x: 0, y: 0, vx: 0, vy: 0, angle: -Math.PI / 2,
@@ -540,7 +540,7 @@ const ParticleField: FC = () => {
 
       // restart on R or tap when dead (with 1s delay to prevent accidental restart)
       const canRestart = ship.hp <= 0 && ship.active && gameMode && (time - ship.deathTime) > 1;
-      if (canRestart && (keys["r"] || (isMobile && (joystick.active || fireTouch.active)))) {
+      if (canRestart && (keys["r"] || (isMobile && joystick.active))) {
         ship.hp = ship.maxHp;
         ship.score = 0;
         ship.x = w / 2;
@@ -575,7 +575,7 @@ const ParticleField: FC = () => {
 
         // shooting
         if (ship.shootCooldown > 0) ship.shootCooldown -= 0.016;
-        const wantsShoot = keys[" "] || keys["mouse0"] || fireTouch.active || (isMobile && gameMode && ship.active);
+        const wantsShoot = keys[" "] || keys["mouse0"] || (isMobile && gameMode && ship.active);
         if (wantsShoot && ship.shootCooldown <= 0) {
           ship.shootCooldown = 0.18;
           // aim: mouse click → mouse, mobile → nearest boid, else ship facing
@@ -781,19 +781,60 @@ const ParticleField: FC = () => {
         document.documentElement.dataset.game = gameMode ? "active" : "paused";
       }
       if (ship.active || isMobile) {
+        // animate morph between play and pause
+        const targetT = gameMode ? 1 : 0;
+        morphT += (targetT - morphT) * 0.12;
+
         ctx.save();
         ctx.beginPath();
         ctx.arc(toggleBtn.x, toggleBtn.y, toggleBtn.r, 0, Math.PI * 2);
-        ctx.fillStyle = gameMode ? `rgba(255, 107, 43, 0.15)` : `rgba(240, 236, 230, 0.08)`;
+        const btnR = Math.round(morphT * 255 + (1 - morphT) * 240);
+        const btnG = Math.round(morphT * 107 + (1 - morphT) * 236);
+        const btnB = Math.round(morphT * 43 + (1 - morphT) * 230);
+        ctx.fillStyle = `rgba(${btnR}, ${btnG}, ${btnB}, ${0.08 + morphT * 0.07})`;
         ctx.fill();
-        ctx.strokeStyle = gameMode ? `rgba(255, 107, 43, 0.4)` : `rgba(240, 236, 230, 0.15)`;
+        ctx.strokeStyle = `rgba(${btnR}, ${btnG}, ${btnB}, ${0.15 + morphT * 0.25})`;
         ctx.lineWidth = 1;
         ctx.stroke();
-        ctx.font = "13px 'IBM Plex Mono', monospace";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillStyle = gameMode ? `rgba(255, 107, 43, 0.6)` : `rgba(240, 236, 230, 0.3)`;
-        ctx.fillText(gameMode ? "‖" : "▶", toggleBtn.x, toggleBtn.y);
+
+        // morphing icon: play triangle (t=0) ↔ pause bars (t=1)
+        // play triangle vertices: left-center tip, top-right, bottom-right
+        // pause: two vertical bars
+        const cx = toggleBtn.x; const cy = toggleBtn.y;
+        const s = 7; // icon half-size
+        const t = morphT;
+
+        // left shape: triangle left edge → left bar
+        const lx0 = cx - s + t * (s * 0.15);           // top-left x
+        const ly0 = cy - s + t * 0;                      // top-left y
+        const lx1 = cx - s + t * (s * 0.15);           // bottom-left x
+        const ly1 = cy + s - t * 0;                      // bottom-left y
+        const lx2 = cx + s - t * (s * 0.7);             // right x (triangle tip → bar right edge)
+        const ly2 = cy - s * (1 - t);                    // right top y
+        const lx3 = cx + s - t * (s * 0.7);             // right x bottom
+        const ly3 = cy + s * (1 - t);                    // right bottom y
+
+        ctx.fillStyle = `rgba(${btnR}, ${btnG}, ${btnB}, ${0.3 + morphT * 0.3})`;
+
+        // left shape / triangle
+        ctx.beginPath();
+        ctx.moveTo(lx0, ly0);
+        ctx.lineTo(lx2, ly2);
+        ctx.lineTo(lx3, ly3);
+        ctx.lineTo(lx1, ly1);
+        ctx.closePath();
+        ctx.fill();
+
+        // right bar (only visible when morphing toward pause, fades in)
+        if (t > 0.01) {
+          ctx.globalAlpha = t;
+          const rx = cx + s * 0.4;
+          ctx.beginPath();
+          ctx.rect(rx - s * 0.15, cy - s, s * 0.3, s * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+
         ctx.restore();
       }
 
@@ -815,16 +856,6 @@ const ParticleField: FC = () => {
           ctx.fillStyle = `rgba(255, 107, 43, 0.25)`;
           ctx.fill();
           ctx.strokeStyle = `rgba(255, 107, 43, 0.4)`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-        // fire indicator
-        if (fireTouch.active) {
-          ctx.beginPath();
-          ctx.arc(fireTouch.x, fireTouch.y, 20, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 107, 43, 0.12)`;
-          ctx.fill();
-          ctx.strokeStyle = `rgba(255, 107, 43, 0.3)`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
@@ -859,7 +890,6 @@ const ParticleField: FC = () => {
           // release any active touches when switching off
           if (!gameMode) {
             joystick.active = false; joystick.touchId = -1; joystick.dx = 0; joystick.dy = 0;
-            fireTouch.active = false; fireTouch.touchId = -1;
           }
           e.preventDefault();
           return;
@@ -867,22 +897,15 @@ const ParticleField: FC = () => {
       }
       if (!gameMode) return; // let page scroll normally
       e.preventDefault();
-      const hw = window.innerWidth / 2;
       for (let i = 0; i < e.changedTouches.length; i++) {
         const t = e.changedTouches[i];
-        if (t.clientX < hw && !joystick.active) {
+        if (!joystick.active) {
           joystick.active = true;
           joystick.touchId = t.identifier;
           joystick.originX = t.clientX;
           joystick.originY = t.clientY;
           joystick.dx = 0;
           joystick.dy = 0;
-        } else if (t.clientX >= hw) {
-          fireTouch.active = true;
-          fireTouch.touchId = t.identifier;
-          fireTouch.x = t.clientX;
-          fireTouch.y = t.clientY;
-          mouse = { x: t.clientX, y: t.clientY };
         }
       }
     };
@@ -904,11 +927,6 @@ const ParticleField: FC = () => {
             joystick.dy = rawDy;
           }
         }
-        if (t.identifier === fireTouch.touchId && fireTouch.active) {
-          fireTouch.x = t.clientX;
-          fireTouch.y = t.clientY;
-          mouse = { x: t.clientX, y: t.clientY };
-        }
       }
     };
     const handleTouchEnd = (e: TouchEvent) => {
@@ -919,10 +937,6 @@ const ParticleField: FC = () => {
           joystick.touchId = -1;
           joystick.dx = 0;
           joystick.dy = 0;
-        }
-        if (t.identifier === fireTouch.touchId) {
-          fireTouch.active = false;
-          fireTouch.touchId = -1;
         }
       }
     };

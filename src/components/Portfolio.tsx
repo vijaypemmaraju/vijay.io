@@ -6,10 +6,66 @@ import projects from "../data/projects";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ─── Referral helpers ───────────────────────────────────── */
+const REF_STORAGE_KEY = "wikitcg_ref";
+
+/** Capture ?ref= from the URL, persist it, and clean the address bar */
+function captureReferralCode(): string | null {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get("ref");
+  if (ref) {
+    localStorage.setItem(REF_STORAGE_KEY, ref);
+    // clean the URL without reloading
+    params.delete("ref");
+    const clean = params.toString();
+    const newUrl = window.location.pathname + (clean ? `?${clean}` : "") + window.location.hash;
+    window.history.replaceState({}, "", newUrl);
+  }
+  return ref ?? localStorage.getItem(REF_STORAGE_KEY);
+}
+
+/** Append the stored ref code to wikitcg URLs */
+function withRef(url: string): string {
+  const ref = typeof window !== "undefined" ? localStorage.getItem(REF_STORAGE_KEY) : null;
+  if (!ref) return url;
+  try {
+    const u = new URL(url);
+    if (u.hostname.includes("wikitcg")) {
+      u.searchParams.set("ref", ref);
+      return u.toString();
+    }
+  } catch { /* not a valid URL, return as-is */ }
+  return url;
+}
+
 // stable viewport height that doesn't change with mobile address bar
 const getVH = () => window.visualViewport?.height ?? window.innerHeight;
 const getVW = () => window.visualViewport?.width ?? window.innerWidth;
 const getPx = () => getVW() >= 1024 ? 96 : getVW() >= 640 ? 64 : 32;
+
+/* ─── Referral Banner ────────────────────────────────────── */
+const ReferralBanner: FC<{ refCode: string }> = ({ refCode }) => {
+  const bannerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (bannerRef.current) {
+      gsap.from(bannerRef.current, { y: -60, opacity: 0, duration: 0.8, delay: 1.5, ease: "power3.out" });
+    }
+  }, []);
+
+  return (
+    <div
+      ref={bannerRef}
+      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center py-3 px-4"
+      style={{ background: "linear-gradient(90deg, #4ecdc420, #4ecdc440, #4ecdc420)", backdropFilter: "blur(12px)" }}
+    >
+      <span className="text-xs sm:text-sm font-mono lowercase tracking-[0.1em] text-[#4ecdc4]">
+        you were referred to <strong>wikitcg</strong> — click the card below to claim your bonus
+      </span>
+    </div>
+  );
+};
 
 /* ─── Hero ──────────────────────────────────────────────── */
 const Hero: FC = () => {
@@ -162,15 +218,17 @@ const Hero: FC = () => {
 const ProjectCard: FC<{
   project: (typeof projects)[number];
   index: number;
-}> = ({ project, index }) => {
+  highlight?: boolean;
+}> = ({ project, index, highlight }) => {
   const [isHovered, setIsHovered] = useState(false);
   const color = project.color || "#fff";
   const Wrapper = project.url ? "a" : "div";
+  const href = project.url ? withRef(project.url) : undefined;
 
   return (
     <Wrapper
-      {...(project.url ? { href: project.url, target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="block relative group cursor-pointer py-5 border-b border-[var(--border)] transition-colors duration-500 hover:border-opacity-30"
+      {...(href ? { href, target: "_blank", rel: "noopener noreferrer" } : {})}
+      className={`block relative group cursor-pointer py-5 border-b border-[var(--border)] transition-colors duration-500 hover:border-opacity-30${highlight ? " ring-1 ring-[#4ecdc4]/30 rounded-sm bg-[#4ecdc4]/[0.03]" : ""}`}
       style={{ borderColor: isHovered ? `${color}25` : undefined }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -222,7 +280,7 @@ const ProjectCard: FC<{
 };
 
 /* ─── Projects List ─────────────────────────────────────── */
-const ProjectsList: FC = () => {
+const ProjectsList: FC<{ refCode: string | null }> = ({ refCode }) => {
   const ref = useRef<HTMLDivElement>(null);
   const triggersRef = useRef<ScrollTrigger[]>([]);
 
@@ -255,7 +313,11 @@ const ProjectsList: FC = () => {
     <div ref={ref} className="relative z-10 px-8 sm:px-16 lg:px-24 max-w-5xl mx-auto">
       {projects.map((project, i) => (
         <div key={project.title} data-project>
-          <ProjectCard project={project} index={i} />
+          <ProjectCard
+            project={project}
+            index={i}
+            highlight={!!refCode && project.title === "wikitcg"}
+          />
         </div>
       ))}
     </div>
@@ -266,6 +328,11 @@ const ProjectsList: FC = () => {
 const Portfolio: FC = () => {
   const worksLabelRef = useRef<HTMLDivElement>(null);
   const miscRef = useRef<ScrollTrigger[]>([]);
+  const [refCode, setRefCode] = useState<string | null>(null);
+
+  useEffect(() => {
+    setRefCode(captureReferralCode());
+  }, []);
 
   useEffect(() => {
     const t = miscRef.current;
@@ -281,6 +348,7 @@ const Portfolio: FC = () => {
   return (
     <div className="relative">
       <ParticleField />
+      {refCode && <ReferralBanner refCode={refCode} />}
       <div data-game-fade="">
         <Hero />
 
@@ -291,7 +359,7 @@ const Portfolio: FC = () => {
           </div>
         </div>
 
-        <ProjectsList />
+        <ProjectsList refCode={refCode} />
 
         <div className="h-16 sm:h-[30vh]" />
       </div>

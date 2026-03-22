@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ─── Referral helpers ───────────────────────────────────── */
 const REF_STORAGE_KEY = "wikitcg_ref";
+const REF_RECORDED_KEY = "wikitcg_ref_recorded";
 
 /** Capture ?ref= from the URL, persist it, and clean the address bar */
 function captureReferralCode(): string | null {
@@ -21,18 +22,28 @@ function captureReferralCode(): string | null {
     const clean = params.toString();
     const newUrl = window.location.pathname + (clean ? `?${clean}` : "") + window.location.hash;
     window.history.replaceState({}, "", newUrl);
+    // record the referral visit so it counts even if wikitcg strips the param
+    recordReferral(ref);
   }
   return ref ?? localStorage.getItem(REF_STORAGE_KEY);
 }
 
-/** Append the stored ref code to wikitcg URLs */
-function withRef(url: string): string {
-  const ref = typeof window !== "undefined" ? localStorage.getItem(REF_STORAGE_KEY) : null;
-  if (!ref) return url;
+/** Fire-and-forget referral registration to wikitcg */
+function recordReferral(ref: string) {
+  const recordedRef = localStorage.getItem(REF_RECORDED_KEY);
+  if (recordedRef === ref) return; // already recorded this ref
+  fetch(`https://wikitcg.net/api/referral?ref=${encodeURIComponent(ref)}`, { method: "POST", mode: "no-cors" })
+    .then(() => localStorage.setItem(REF_RECORDED_KEY, ref))
+    .catch(() => { /* best-effort, will retry on next visit */ });
+}
+
+/** Append ref code to wikitcg URLs */
+function withRef(url: string, refCode: string | null): string {
+  if (!refCode) return url;
   try {
     const u = new URL(url);
     if (u.hostname.includes("wikitcg")) {
-      u.searchParams.set("ref", ref);
+      u.searchParams.set("ref", refCode);
       return u.toString();
     }
   } catch { /* not a valid URL, return as-is */ }
@@ -61,7 +72,7 @@ const ReferralBanner: FC<{ refCode: string }> = ({ refCode }) => {
       style={{ background: "linear-gradient(90deg, #4ecdc420, #4ecdc440, #4ecdc420)", backdropFilter: "blur(12px)" }}
     >
       <span className="text-xs sm:text-sm font-mono lowercase tracking-[0.1em] text-[#4ecdc4]">
-        you were referred to <strong>wikitcg</strong> — click the card below to claim your bonus
+        you were referred to <strong>wikitcg</strong> — scroll down and click the card to claim your bonus
       </span>
     </div>
   );
@@ -219,11 +230,12 @@ const ProjectCard: FC<{
   project: (typeof projects)[number];
   index: number;
   highlight?: boolean;
-}> = ({ project, index, highlight }) => {
+  refCode?: string | null;
+}> = ({ project, index, highlight, refCode }) => {
   const [isHovered, setIsHovered] = useState(false);
   const color = project.color || "#fff";
   const Wrapper = project.url ? "a" : "div";
-  const href = project.url ? withRef(project.url) : undefined;
+  const href = project.url ? withRef(project.url, refCode ?? null) : undefined;
 
   return (
     <Wrapper
@@ -317,6 +329,7 @@ const ProjectsList: FC<{ refCode: string | null }> = ({ refCode }) => {
             project={project}
             index={i}
             highlight={!!refCode && project.title === "wikitcg"}
+            refCode={refCode}
           />
         </div>
       ))}

@@ -49,7 +49,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
 
       <div className="relative z-10 flex justify-between items-start">
         <motion.span
-          className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/20"
+          className="text-[10px] font-mono lowercase tracking-[0.2em] text-white/20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.1 }}
@@ -91,7 +91,7 @@ const ProjectCard: FC<ProjectCardProps> = ({
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="text-[10px] font-mono uppercase tracking-[0.1em] text-white/20 group-hover:text-white/40 transition-colors duration-500"
+              className="text-[10px] font-mono lowercase tracking-[0.1em] text-white/20 group-hover:text-white/40 transition-colors duration-500"
             >
               {tag}
             </span>

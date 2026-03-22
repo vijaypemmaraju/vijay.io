@@ -17,7 +17,6 @@ const Hero: FC = () => {
   const nameRef = useRef<HTMLDivElement>(null);
   const inlineLastNameRef = useRef<HTMLSpanElement>(null);
   const lastNameRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLDivElement>(null);
   const extraRef = useRef<HTMLDivElement>(null);
   const indicatorRef = useRef<HTMLDivElement>(null);
   const heroTriggersRef = useRef<ScrollTrigger[]>([]);
@@ -26,11 +25,10 @@ const Hero: FC = () => {
     const spacer = spacerRef.current;
     const name = nameRef.current;
     const lastName = lastNameRef.current;
-    const title = titleRef.current;
     const extra = extraRef.current;
     const indicator = indicatorRef.current;
     const inlineLastName = inlineLastNameRef.current;
-    if (!spacer || !name || !inlineLastName || !lastName || !title || !extra || !indicator) return;
+    if (!spacer || !name || !inlineLastName || !lastName || !extra || !indicator) return;
 
     // pure helper: compute all positions from current viewport (no side effects)
     const getPositions = () => {
@@ -40,28 +38,24 @@ const Hero: FC = () => {
       const lineHeight = heroFontSize * 0.9;
       const heroNameY = vh * 0.5 - lineHeight * 1.5;
       const heroLastNameY = heroNameY + lineHeight;
-      const heroTitleY = heroLastNameY + lineHeight + 32;
-      const heroExtraY = heroTitleY + 50; // approximate title height + gap
-      return { px, vh, heroFontSize, lineHeight, heroNameY, heroLastNameY, heroTitleY, heroExtraY };
+      const heroExtraY = heroLastNameY + lineHeight + 32;
+      return { px, vh, heroFontSize, lineHeight, heroNameY, heroLastNameY, heroExtraY };
     };
 
     const targetNameFontSize = 20;
-    const targetTitleY = 44;
 
     const pos = getPositions();
 
     gsap.set(name, { fontSize: pos.heroFontSize, x: pos.px, y: pos.heroNameY, opacity: 1 });
     gsap.set(inlineLastName, { display: "inline", opacity: 0, width: 0, overflow: "hidden" });
     gsap.set(lastName, { fontSize: pos.heroFontSize, x: pos.px, y: pos.heroLastNameY, autoAlpha: 0.3 });
-    gsap.set(title, { x: pos.px, y: pos.heroTitleY, scale: 1, transformOrigin: "top left" });
     gsap.set(extra, { x: pos.px, y: pos.heroExtraY, autoAlpha: 1 });
     gsap.set(indicator, { autoAlpha: 1 });
 
     // entrance animations
     gsap.from(name, { y: pos.heroNameY + 80, opacity: 0, duration: 1, ease: "power3.out" });
     gsap.from(lastName, { y: pos.heroLastNameY + 80, opacity: 0, duration: 1, delay: 0.1, ease: "power3.out" });
-    gsap.from(title, { y: pos.heroTitleY + 20, opacity: 0, duration: 0.8, delay: 0.3, ease: "power3.out" });
-    gsap.from(extra, { y: pos.heroExtraY + 20, opacity: 0, duration: 0.8, delay: 0.5, ease: "power3.out" });
+    gsap.from(extra, { y: pos.heroExtraY + 20, opacity: 0, duration: 0.8, delay: 0.3, ease: "power3.out" });
     gsap.from(indicator, { opacity: 0, duration: 0.8, delay: 1.2 });
 
     // scroll timeline with functional values that re-evaluate on refresh
@@ -78,9 +72,6 @@ const Hero: FC = () => {
 
     // name shrinks to top-left
     tl.to(name, { fontSize: targetNameFontSize, x: pos.px, y: 20, duration: 1, ease: "power2.inOut" }, 0);
-
-    // title scales to top-left
-    tl.to(title, { scale: 10 / 14, x: pos.px, y: targetTitleY, duration: 1, ease: "power2.inOut" }, 0);
 
     // last name fades
     tl.to(lastName, { autoAlpha: 0, y: pos.heroLastNameY - 40, duration: 0.3 }, 0);
@@ -127,19 +118,6 @@ const Hero: FC = () => {
           pemmaraju
         </div>
 
-        {/* title */}
-        <div
-          ref={titleRef}
-          className="absolute top-0 left-0 flex items-center gap-2 will-change-transform pointer-events-auto"
-          style={{ maxWidth: `calc(100vw - ${64}px)` }}
-        >
-          <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
-          <span className="font-mono lowercase tracking-[0.1em] text-[var(--text-dim)]">
-            forward deployed engineer @{" "}
-            <span className="text-[var(--text)] opacity-70">elevenlabs</span>
-          </span>
-        </div>
-
         {/* roles + socials */}
         <div ref={extraRef} className="absolute top-0 left-0 will-change-transform pointer-events-auto">
           <p className="text-sm font-mono lowercase tracking-[0.05em] text-[var(--text-muted)]">
@@ -156,7 +134,7 @@ const Hero: FC = () => {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-mono uppercase tracking-[0.2em] text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300"
+                className="text-xs font-mono lowercase tracking-[0.2em] text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300"
               >
                 {link.label}
               </a>
@@ -170,7 +148,7 @@ const Hero: FC = () => {
         ref={indicatorRef}
         className="fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-40"
       >
-        <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[var(--text-muted)]">scroll</span>
+        <span className="text-[10px] font-mono lowercase tracking-[0.3em] text-[var(--text-muted)]">scroll</span>
         <div className="w-px h-8 bg-[var(--text-muted)] animate-pulse" />
       </div>
 
@@ -206,7 +184,7 @@ const ProjectCard: FC<{
       <div className="pl-6 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-6">
         {/* number */}
         <span
-          className="text-xs font-mono uppercase tracking-[0.2em] transition-colors duration-500"
+          className="text-xs font-mono lowercase tracking-[0.2em] transition-colors duration-500"
           style={{ color: isHovered ? `${color}aa` : "var(--text-muted)" }}
         >
           {String(index + 1).padStart(2, "0")}
@@ -303,18 +281,20 @@ const Portfolio: FC = () => {
   return (
     <div className="relative">
       <ParticleField />
-      <Hero />
+      <div data-game-fade="">
+        <Hero />
 
-      <div ref={worksLabelRef} className="relative z-10 px-8 sm:px-16 lg:px-24 pt-8 pb-4 max-w-5xl mx-auto">
-        <div className="flex items-center gap-4">
-          <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-[var(--text-muted)]">selected works</span>
-          <div className="flex-1 h-px bg-[var(--border)]" />
+        <div ref={worksLabelRef} className="relative z-10 px-8 sm:px-16 lg:px-24 pt-8 pb-4 max-w-5xl mx-auto">
+          <div className="flex items-center gap-4">
+            <span className="text-[10px] font-mono lowercase tracking-[0.3em] text-[var(--text-muted)]">selected works</span>
+            <div className="flex-1 h-px bg-[var(--border)]" />
+          </div>
         </div>
+
+        <ProjectsList />
+
+        <div className="h-16 sm:h-[30vh]" />
       </div>
-
-      <ProjectsList />
-
-      <div className="h-16 sm:h-[30vh]" />
     </div>
   );
 };

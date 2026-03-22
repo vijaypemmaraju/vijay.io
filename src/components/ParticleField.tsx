@@ -189,8 +189,8 @@ const ParticleField: FC = () => {
       const visualRange = 100;
       const separationDist = 25;
 
-      if (!ship.active) {
-        // skip boid update/draw entirely before game starts
+      if (!ship.active || !gameMode) {
+        // skip boid update/draw when game not started or paused
       } else for (const b of boids) {
         // handle dead boids
         if (b.dead) {
@@ -445,10 +445,12 @@ const ParticleField: FC = () => {
       const bulletSpeed = 8;
       const bulletHitRadius = 12;
 
-      // activate ship on first key press or touch
-      if (!ship.active && (keys["w"] || keys["a"] || keys["s"] || keys["d"] || keys["arrowup"] || keys["arrowdown"] || keys["arrowleft"] || keys["arrowright"] || keys[" "] || joystick.active)) {
+      // activate ship on first key press, touch, or play button
+      if (!ship.active && (keys["w"] || keys["a"] || keys["s"] || keys["d"] || keys["arrowup"] || keys["arrowdown"] || keys["arrowleft"] || keys["arrowright"] || keys[" "] || joystick.active || gameMode)) {
         ship.active = true;
+        gameMode = true;
         hintFadeStarted = true;
+        document.documentElement.dataset.game = "active";
       }
 
       // fade hint
@@ -467,8 +469,8 @@ const ParticleField: FC = () => {
         ctx.restore();
       }
 
-      // update & draw bullets
-      for (let i = bullets.length - 1; i >= 0; i--) {
+      // update & draw bullets (skip when paused)
+      if (gameMode) for (let i = bullets.length - 1; i >= 0; i--) {
         const bl = bullets[i];
         bl.x += bl.vx; bl.y += bl.vy;
         bl.life++;
@@ -537,7 +539,7 @@ const ParticleField: FC = () => {
       }
 
       // restart on R or tap when dead (with 1s delay to prevent accidental restart)
-      const canRestart = ship.hp <= 0 && ship.active && (time - ship.deathTime) > 1;
+      const canRestart = ship.hp <= 0 && ship.active && gameMode && (time - ship.deathTime) > 1;
       if (canRestart && (keys["r"] || (isMobile && (joystick.active || fireTouch.active)))) {
         ship.hp = ship.maxHp;
         ship.score = 0;
@@ -551,9 +553,9 @@ const ParticleField: FC = () => {
         for (const b of boids) { b.behavior = "flock"; b.aggroTimer = 0; b.hp = 1; }
       }
 
-      // input (only when active and alive)
+      // input (only when active, alive, and game mode)
       ship.thrusting = false;
-      if (ship.active && ship.hp > 0) {
+      if (ship.active && ship.hp > 0 && gameMode) {
         if (keys["w"] || keys["arrowup"]) { ship.vy -= shipThrust; ship.thrusting = true; }
         if (keys["s"] || keys["arrowdown"]) { ship.vy += shipThrust; ship.thrusting = true; }
         if (keys["a"] || keys["arrowleft"]) { ship.vx -= shipThrust; ship.thrusting = true; }
@@ -600,25 +602,27 @@ const ParticleField: FC = () => {
         }
       }
 
-      // face velocity direction
-      if (Math.abs(ship.vx) > 0.1 || Math.abs(ship.vy) > 0.1) {
-        ship.angle = Math.atan2(ship.vy, ship.vx);
+      if (gameMode) {
+        // face velocity direction
+        if (Math.abs(ship.vx) > 0.1 || Math.abs(ship.vy) > 0.1) {
+          ship.angle = Math.atan2(ship.vy, ship.vx);
+        }
+
+        // clamp speed
+        const spd = Math.sqrt(ship.vx * ship.vx + ship.vy * ship.vy);
+        if (spd > shipMaxSpeed) { ship.vx = (ship.vx / spd) * shipMaxSpeed; ship.vy = (ship.vy / spd) * shipMaxSpeed; }
+        ship.vx *= shipFriction; ship.vy *= shipFriction;
+
+        ship.x += ship.vx; ship.y += ship.vy;
+
+        // wrap
+        if (ship.x < 0) ship.x = w; if (ship.x > w) ship.x = 0;
+        if (ship.y < 0) ship.y = h; if (ship.y > h) ship.y = 0;
+
+        // trail
+        ship.trail.push({ x: ship.x, y: ship.y, alpha: 1 });
+        if (ship.trail.length > 25) ship.trail.shift();
       }
-
-      // clamp speed
-      const spd = Math.sqrt(ship.vx * ship.vx + ship.vy * ship.vy);
-      if (spd > shipMaxSpeed) { ship.vx = (ship.vx / spd) * shipMaxSpeed; ship.vy = (ship.vy / spd) * shipMaxSpeed; }
-      ship.vx *= shipFriction; ship.vy *= shipFriction;
-
-      ship.x += ship.vx; ship.y += ship.vy;
-
-      // wrap
-      if (ship.x < 0) ship.x = w; if (ship.x > w) ship.x = 0;
-      if (ship.y < 0) ship.y = h; if (ship.y > h) ship.y = 0;
-
-      // trail
-      ship.trail.push({ x: ship.x, y: ship.y, alpha: 1 });
-      if (ship.trail.length > 25) ship.trail.shift();
 
       // draw trail (engine exhaust)
       for (let i = 0; i < ship.trail.length - 1; i++) {
@@ -728,11 +732,11 @@ const ParticleField: FC = () => {
       }
       ctx.restore();
 
-      // boid-ship interactions
-      if (ship.invincible > 0) ship.invincible -= 0.016;
-      if (ship.damageFlash > 0) ship.damageFlash -= 0.03;
+      // boid-ship interactions (skip when paused)
+      if (gameMode && ship.invincible > 0) ship.invincible -= 0.016;
+      if (gameMode && ship.damageFlash > 0) ship.damageFlash -= 0.03;
       const contactRadius = 10;
-      for (const b of boids) {
+      if (gameMode) for (const b of boids) {
         if (b.dead) continue;
         const bsx = b.x - ship.x; const bsy = b.y - ship.y;
         const bsd = Math.sqrt(bsx * bsx + bsy * bsy);
@@ -771,10 +775,13 @@ const ParticleField: FC = () => {
         }
       }
 
-      // ── Mobile toggle button ──
-      if (isMobile) {
+      // ── Pause/play toggle button (desktop + mobile) ──
+      // sync data-game attribute with gameMode
+      if (ship.active) {
+        document.documentElement.dataset.game = gameMode ? "active" : "paused";
+      }
+      if (ship.active || isMobile) {
         ctx.save();
-        // toggle circle
         ctx.beginPath();
         ctx.arc(toggleBtn.x, toggleBtn.y, toggleBtn.r, 0, Math.PI * 2);
         ctx.fillStyle = gameMode ? `rgba(255, 107, 43, 0.15)` : `rgba(240, 236, 230, 0.08)`;
@@ -782,12 +789,11 @@ const ParticleField: FC = () => {
         ctx.strokeStyle = gameMode ? `rgba(255, 107, 43, 0.4)` : `rgba(240, 236, 230, 0.15)`;
         ctx.lineWidth = 1;
         ctx.stroke();
-        // icon: gamepad when scroll mode, scroll arrows when game mode
         ctx.font = "13px 'IBM Plex Mono', monospace";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
         ctx.fillStyle = gameMode ? `rgba(255, 107, 43, 0.6)` : `rgba(240, 236, 230, 0.3)`;
-        ctx.fillText(gameMode ? "↕" : "▶", toggleBtn.x, toggleBtn.y);
+        ctx.fillText(gameMode ? "‖" : "▶", toggleBtn.x, toggleBtn.y);
         ctx.restore();
       }
 
@@ -937,7 +943,18 @@ const ParticleField: FC = () => {
       keys[e.key.toLowerCase()] = false;
     };
     const handleMouseDown = (e: MouseEvent) => {
-      if (e.button === 0) keys["mouse0"] = true;
+      if (e.button === 0) {
+        // check toggle button
+        if (ship.active && hitsToggle(e.clientX, e.clientY)) {
+          gameMode = !gameMode;
+          if (!gameMode) {
+            // release keys when pausing
+            for (const k in keys) keys[k] = false;
+          }
+          return;
+        }
+        keys["mouse0"] = true;
+      }
     };
     const handleMouseUp = (e: MouseEvent) => {
       if (e.button === 0) keys["mouse0"] = false;
@@ -968,6 +985,7 @@ const ParticleField: FC = () => {
       window.removeEventListener("touchend", handleTouchEnd);
       window.removeEventListener("touchcancel", handleTouchEnd);
       cancelAnimationFrame(animId);
+      delete document.documentElement.dataset.game;
     };
   }, []);
 

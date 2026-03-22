@@ -11,7 +11,7 @@ const { title } = Astro.props;
 <html lang="en" data-theme="business">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content="vijay pemmaraju — forward deployed engineer @ elevenlabs" />
+    <meta name="description" content="vijay pemmaraju — engineer, creator, musician" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,7 +29,7 @@ const { title } = Astro.props;
     <slot />
 
     <!-- noise texture overlay -->
-    <div class="noise-overlay" aria-hidden="true"></div>
+    <div class="noise-overlay" data-game-fade aria-hidden="true"></div>
 
     <style is:global>
       :root {
@@ -50,6 +50,13 @@ const { title } = Astro.props;
       }
       code {
         font-family: "IBM Plex Mono", Menlo, Monaco, monospace;
+      }
+      html[data-game="active"] [data-game-fade] {
+        transition: opacity 0.6s ease;
+        opacity: 0.05;
+      }
+      html:not([data-game="active"]) [data-game-fade] {
+        transition: opacity 0.6s ease;
       }
 
       .noise-overlay {

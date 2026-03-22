@@ -86,7 +86,8 @@ const Bento = () => {
     },
   ];
 
-  const projectItems: BentoItem[] = projects.map((project, i) => ({
+  const uniqueProjects = projects.filter((project, i, arr) => arr.findIndex((p) => p.title === project.title) === i);
+  const projectItems: BentoItem[] = uniqueProjects.map((project, i) => ({
     key: `project-${project.title}`,
     component: (
       <ProjectCard

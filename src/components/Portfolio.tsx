@@ -253,7 +253,9 @@ const ProjectsList: FC = () => {
 
   return (
     <div ref={ref} className="relative z-10 px-8 sm:px-16 lg:px-24 max-w-5xl mx-auto">
-      {projects.map((project, i) => (
+      {projects
+        .filter((project, i, arr) => arr.findIndex((p) => p.title === project.title) === i)
+        .map((project, i) => (
         <div key={project.title} data-project>
           <ProjectCard project={project} index={i} />
         </div>

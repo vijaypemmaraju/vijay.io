@@ -11,6 +11,17 @@ export type Project = {
 
 const projects: Project[] = [
   {
+    title: "ten million fireflies",
+    description:
+      "10 million glowing fireflies rendered at 60fps with raw webgpu compute shaders.",
+    tags: ["webgpu", "wgsl", "astro"],
+    url: "https://tenmillionfireflies.com",
+    color: "#9acd32",
+
+    span: "2",
+    rowSpan: "2",
+  },
+  {
     title: "wikitcg",
     description:
       "turn any wikipedia article into a holographic trading card. collect, trade, battle.",

@@ -810,9 +810,9 @@ const ParticleField: FC = () => {
         const lx1 = cx - s + t * (s * 0.15);           // bottom-left x
         const ly1 = cy + s - t * 0;                      // bottom-left y
         const lx2 = cx + s - t * (s * 0.7);             // right x (triangle tip → bar right edge)
-        const ly2 = cy - s * (1 - t);                    // right top y
+        const ly2 = cy - s * t;                            // right top y (converges to center at t=0 for triangle tip)
         const lx3 = cx + s - t * (s * 0.7);             // right x bottom
-        const ly3 = cy + s * (1 - t);                    // right bottom y
+        const ly3 = cy + s * t;                            // right bottom y (converges to center at t=0 for triangle tip)
 
         ctx.fillStyle = `rgba(${btnR}, ${btnG}, ${btnB}, ${0.3 + morphT * 0.3})`;
 

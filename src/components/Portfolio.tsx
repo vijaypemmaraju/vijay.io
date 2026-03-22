@@ -8,7 +8,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 /* ─── Referral helpers ───────────────────────────────────── */
 const REF_STORAGE_KEY = "wikitcg_ref";
-const REF_RECORDED_KEY = "wikitcg_ref_recorded";
 
 /** Capture ?ref= from the URL, persist it, and clean the address bar */
 function captureReferralCode(): string | null {
@@ -22,22 +21,11 @@ function captureReferralCode(): string | null {
     const clean = params.toString();
     const newUrl = window.location.pathname + (clean ? `?${clean}` : "") + window.location.hash;
     window.history.replaceState({}, "", newUrl);
-    // record the referral visit so it counts even if wikitcg strips the param
-    recordReferral(ref);
   }
   return ref ?? localStorage.getItem(REF_STORAGE_KEY);
 }
 
-/** Fire-and-forget referral registration to wikitcg */
-function recordReferral(ref: string) {
-  const recordedRef = localStorage.getItem(REF_RECORDED_KEY);
-  if (recordedRef === ref) return; // already recorded this ref
-  fetch(`https://wikitcg.net/api/referral?ref=${encodeURIComponent(ref)}`, { method: "POST", mode: "no-cors" })
-    .then(() => localStorage.setItem(REF_RECORDED_KEY, ref))
-    .catch(() => { /* best-effort, will retry on next visit */ });
-}
-
-/** Append ref code to wikitcg URLs */
+/** Append ref code to wikitcg URLs so wikitcg can attribute signups */
 function withRef(url: string, refCode: string | null): string {
   if (!refCode) return url;
   try {
@@ -72,7 +60,7 @@ const ReferralBanner: FC<{ refCode: string }> = ({ refCode }) => {
       style={{ background: "linear-gradient(90deg, #4ecdc420, #4ecdc440, #4ecdc420)", backdropFilter: "blur(12px)" }}
     >
       <span className="text-xs sm:text-sm font-mono lowercase tracking-[0.1em] text-[#4ecdc4]">
-        you were referred to <strong>wikitcg</strong> — scroll down and click the card to claim your bonus
+        you were referred to <strong>wikitcg</strong> — scroll down and click the card to sign up and claim your bonus
       </span>
     </div>
   );

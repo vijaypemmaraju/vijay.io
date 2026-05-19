@@ -120,7 +120,7 @@ const Hero: FC = () => {
 
         {/* roles + socials */}
         <div ref={extraRef} className="absolute top-0 left-0 will-change-transform pointer-events-auto">
-          <p className="text-sm font-mono lowercase tracking-[0.05em] text-[var(--text-muted)]">
+          <p className="text-base sm:text-lg font-mono lowercase tracking-[0.05em] text-[var(--text-dim)]">
             engineer • creator • musician
           </p>
           <div className="flex gap-6 mt-6">
@@ -134,7 +134,7 @@ const Hero: FC = () => {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs font-mono lowercase tracking-[0.2em] text-[var(--text-muted)] hover:text-[var(--accent)] transition-colors duration-300"
+                className="text-sm sm:text-base font-mono lowercase tracking-[0.2em] text-[var(--text-dim)] hover:text-[var(--accent)] transition-colors duration-300"
               >
                 {link.label}
               </a>

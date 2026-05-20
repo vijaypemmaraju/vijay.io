@@ -119,7 +119,7 @@ const Hero: FC = () => {
         </div>
 
         {/* roles + socials */}
-        <div ref={extraRef} className="absolute top-0 left-0 will-change-transform pointer-events-auto">
+        <div ref={extraRef} className="absolute top-0 left-0 will-change-transform pointer-events-auto" style={{ opacity: 0 }}>
           <p className="text-base sm:text-lg font-mono lowercase tracking-[0.05em] text-[var(--text-dim)]">
             engineer • creator • musician
           </p>

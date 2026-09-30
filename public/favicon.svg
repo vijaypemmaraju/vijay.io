@@ -1,5 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
-  <rect width="128" height="128" rx="20" fill="#0a0a0c"/>
-  <text x="64" y="78" dominant-baseline="middle" text-anchor="middle" font-size="72" font-weight="800" font-family="system-ui, sans-serif" fill="#f0ece6" letter-spacing="-3">vp</text>
-  <circle cx="100" cy="28" r="6" fill="#ff6b2b"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .p { fill: #e6ebe2 } .i { stroke: #1d2340 } .l { fill: #6d8c5a }
+    @media (prefers-color-scheme: dark) { .p { fill: #0f1420 } .i { stroke: #d3e3c9 } .l { fill: #4f8a58 } }
+  </style>
+  <rect class="p" width="64" height="64" rx="14"/>
+  <path class="l" d="M31 36c-9 1-16-4-18-12 8-1 16 3 18 12z"/>
+  <path class="l" d="M33 28c2-9 10-14 19-12-1 9-9 14-19 12z"/>
+  <path class="i" d="M32 54c0-8-1-17 1-26M31 36c-6-2-12-6-15-10M33 28c5-3 10-6 15-9M20 54h24" fill="none" stroke-width="2.4" stroke-linecap="round"/>
 </svg>

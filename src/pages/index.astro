@@ -1,10 +1,493 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Portfolio from "../components/Portfolio";
+import { Image } from "astro:assets";
+import Base from "../layouts/Base.astro";
+import { feature, groups, smaller, elsewhere, type Project } from "../data/projects";
+
+const shot = (p: Project) => p.links[0]?.href;
+const external = (href: string) => (href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {});
+const isGif = (p: Project) => p.image?.format === "gif";
 ---
 
-<Layout title="vijay pemmaraju">
-  <main class="text-white">
-    <Portfolio client:only />
+<Base title="vijay pemmaraju">
+  <main>
+    <header class="hero">
+      <div class="hero-text">
+        <h1>vijay<br />pemmaraju</h1>
+        <p class="lede">
+          i build seeded worlds, instruments that run in a browser, and small ai creatures that live on your
+          phone. most of it is procedural, and most of it you can play right now.
+        </p>
+        <ul class="elsewhere">
+          {elsewhere.map((l) => <li><a href={l.href} {...external(l.href)}>{l.label}</a></li>)}
+        </ul>
+      </div>
+      <figure class="plate">
+        <canvas id="plant" aria-hidden="true"></canvas>
+        <figcaption>
+          <span>fig. <span id="seed">0</span>, <i id="species">a plant</i></span>
+          <button id="regrow" type="button">grow another</button>
+        </figcaption>
+      </figure>
+    </header>
+
+    <section class="feature" aria-labelledby="feature-name">
+      <a class="feature-shot" href={shot(feature)} {...external(shot(feature)!)} tabindex="-1">
+        <Image src={feature.image!} alt={feature.alt!} widths={[800, 1280, 1600]} sizes="(min-width: 1100px) 1040px, 100vw" loading="eager" />
+      </a>
+      <div class="feature-text">
+        <p class="note">{feature.note}</p>
+        <h2 id="feature-name">{feature.name}</h2>
+        <p>{feature.blurb}</p>
+        <p class="made">made with {feature.made.join(", ")}</p>
+        <a class="go" href={shot(feature)} {...external(shot(feature)!)}>{feature.links[0].label}</a>
+      </div>
+    </section>
+
+    {
+      groups.map((g) => (
+        <section class="group" aria-labelledby={`g-${g.name}`}>
+          <div class="group-head">
+            <canvas class="specimen" data-name={g.name} aria-hidden="true" />
+            <h2 id={`g-${g.name}`}>{g.name}</h2>
+            <p>{g.about}</p>
+          </div>
+          <div class="entries">
+            {g.projects.map((p) => (
+              <article class="entry">
+                {p.image && (
+                  <a class:list={["shot", p.fit ?? "cover"]} href={shot(p)} {...external(shot(p)!)} tabindex="-1">
+                    {isGif(p) ? (
+                      <img src={p.image.src} alt={p.alt} width={p.image.width} height={p.image.height} loading="lazy" />
+                    ) : (
+                      <Image src={p.image} alt={p.alt ?? ""} widths={[480, 800]} sizes="(min-width: 900px) 420px, 100vw" />
+                    )}
+                  </a>
+                )}
+                <h3>
+                  {p.name} <span class="year">{p.year}</span>
+                </h3>
+                <p>{p.blurb}</p>
+                <p class="made">made with {p.made.join(", ")}</p>
+                <ul class="links">
+                  {p.links.map((l) => (
+                    <li>
+                      <a href={l.href} {...external(l.href)}>{l.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+
+    <section class="group" aria-labelledby="g-smaller">
+      <div class="group-head">
+        <canvas class="specimen" data-name="smaller things" aria-hidden="true"></canvas>
+        <h2 id="g-smaller">smaller things</h2>
+        <p>libraries, toys and older experiments that are still up.</p>
+      </div>
+      <ul class="smaller">
+        {
+          smaller.map((p) => (
+            <li>
+              <a href={p.links[0].href} {...external(p.links[0].href)}>{p.name}</a>
+              <span class="year">{p.year}</span>
+              <p>{p.blurb}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
   </main>
-</Layout>
+
+  <footer>
+    <p>this page grew from seed <span id="footer-seed">0</span>. every plant on it is drawn fresh in your browser.</p>
+  </footer>
+</Base>
+
+<script>
+  import { drawPlant, hashString, readPalette, speciesName, type Plant } from "../lib/grow";
+
+  const canvas = document.getElementById("plant") as HTMLCanvasElement;
+  const seedEl = document.getElementById("seed")!;
+  const footerSeed = document.getElementById("footer-seed")!;
+  const speciesEl = document.getElementById("species")!;
+  const button = document.getElementById("regrow") as HTMLButtonElement;
+  const specimens = [...document.querySelectorAll<HTMLCanvasElement>("canvas.specimen")];
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const dark = matchMedia("(prefers-color-scheme: dark)");
+
+  const fromUrl = Number(new URL(location.href).searchParams.get("seed"));
+  let seed = Number.isInteger(fromUrl) && fromUrl > 0 ? fromUrl : 1 + Math.floor(Math.random() * 99998);
+  let plant: Plant | null = null;
+
+  function grow(animate: boolean) {
+    plant?.cancel();
+    seedEl.textContent = String(seed);
+    footerSeed.textContent = String(seed);
+    speciesEl.textContent = speciesName(seed);
+    plant = drawPlant(canvas, seed, readPalette(document.documentElement), {
+      animate: animate && !reduced.matches,
+      duration: 2800,
+    });
+  }
+
+  function drawSpecimens() {
+    const pal = readPalette(document.documentElement);
+    for (const c of specimens) drawPlant(c, hashString(c.dataset.name ?? ""), pal, { detail: 0.8 });
+  }
+
+  button.addEventListener("click", () => {
+    seed = 1 + Math.floor(Math.random() * 99998);
+    const url = new URL(location.href);
+    url.searchParams.set("seed", String(seed));
+    history.replaceState(null, "", url);
+    grow(true);
+  });
+
+  let resizeTimer = 0;
+  let lastWidth = innerWidth;
+  addEventListener("resize", () => {
+    // phones fire resize when the address bar hides; only redraw on real width changes
+    if (innerWidth === lastWidth) return;
+    lastWidth = innerWidth;
+    clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      grow(false);
+      drawSpecimens();
+    }, 150);
+  });
+
+  dark.addEventListener("change", () => {
+    grow(false);
+    drawSpecimens();
+  });
+
+  document.fonts.ready.then(() => {
+    grow(true);
+    drawSpecimens();
+  });
+</script>
+
+<style>
+  main {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 0 clamp(16px, 4vw, 48px);
+  }
+
+  /* hero: name on the left, a plate on the right */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 64px);
+    align-items: end;
+    min-height: min(84vh, 820px);
+    padding: clamp(32px, 6vh, 72px) 0 48px;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(3.4rem, 8.2vw, 7.4rem);
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.35em;
+  }
+
+  .lede {
+    font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+    line-height: 1.5;
+    max-width: 30em;
+    margin: 0 0 1.6em;
+  }
+
+  .elsewhere {
+    display: flex;
+    gap: 1.4em;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .plate {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 420px;
+  }
+
+  #plant {
+    display: block;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+  }
+
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1em;
+    flex-wrap: wrap;
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--ink-faint);
+    padding-top: 0.6em;
+  }
+
+  button {
+    font: inherit;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    color: var(--link);
+    background: none;
+    border: 0;
+    padding: 0.2em 0;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+  }
+
+  button:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* feature */
+  .feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+    gap: clamp(20px, 3vw, 44px);
+    align-items: end;
+    padding: 48px 0 96px;
+  }
+
+  .feature-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px var(--ink-faint);
+  }
+
+  .feature h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.2rem, 4vw, 3.4rem);
+    line-height: 0.95;
+    margin: 0.15em 0 0.4em;
+  }
+
+  .note {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .feature-text > p {
+    max-width: 34em;
+  }
+
+  .go {
+    display: inline-block;
+    margin-top: 0.4em;
+    font-weight: 600;
+    font-size: 1.05rem;
+  }
+
+  /* groups */
+  .group {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    gap: clamp(20px, 4vw, 64px);
+    padding: 56px 0;
+    border-top: 1px solid var(--ink-faint);
+  }
+
+  .group-head {
+    align-self: start;
+    position: sticky;
+    top: 24px;
+  }
+
+  .specimen {
+    display: block;
+    width: 150px;
+    height: 180px;
+    margin-left: -34px;
+  }
+
+  .group-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 2.1rem;
+    line-height: 1;
+    margin: 0.1em 0 0.35em;
+  }
+
+  .group-head p {
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    margin: 0;
+    max-width: 20em;
+  }
+
+  .entries {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 56px clamp(24px, 3vw, 44px);
+  }
+
+  .entry p {
+    margin: 0 0 0.5em;
+  }
+
+  .shot {
+    display: block;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px var(--ink-faint);
+    background: var(--paper-deep);
+    margin-bottom: 16px;
+  }
+
+  .shot img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .shot.contain img {
+    object-fit: contain;
+    padding: 6%;
+    image-rendering: auto;
+  }
+
+  h3 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.65rem;
+    line-height: 1.05;
+    margin: 0 0 0.3em;
+  }
+
+  .year {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.62em;
+    color: var(--ink-soft);
+    margin-left: 0.2em;
+  }
+
+  .made {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+  }
+
+  .links {
+    list-style: none;
+    padding: 0;
+    margin: 0.5em 0 0;
+    display: grid;
+    gap: 0.25em;
+    font-size: 0.95rem;
+  }
+
+  .links a {
+    overflow-wrap: anywhere;
+  }
+
+  .smaller {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px clamp(24px, 3vw, 44px);
+  }
+
+  .smaller a {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+  }
+
+  .smaller .year {
+    font-size: 0.95rem;
+  }
+
+  .smaller p {
+    margin: 0.2em 0 0;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  footer {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px clamp(16px, 4vw, 48px) 64px;
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  footer p {
+    border-top: 1px solid var(--ink-faint);
+    padding-top: 1.2em;
+    margin: 0;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      min-height: 0;
+      padding-top: 48px;
+    }
+
+    .plate {
+      min-height: 0;
+      height: min(110vw, 520px);
+    }
+
+    .feature,
+    .group {
+      grid-template-columns: 1fr;
+    }
+
+    .group-head {
+      position: static;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 8px;
+      align-items: end;
+    }
+
+    .group-head .specimen {
+      grid-row: span 2;
+      width: 96px;
+      height: 120px;
+      margin-left: -20px;
+    }
+
+    .group-head p {
+      grid-column: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .entries,
+    .smaller {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,57 @@
+---
+import Base from "./Base.astro";
+interface Props {
+  title: string;
+  updated?: string;
+}
+const { title, updated } = Astro.props;
+---
+
+<Base title={title}>
+  <main class="doc">
+    <a class="home" href="/">vijay.io</a>
+    <h1>{title}</h1>
+    {updated && <p class="updated">last updated {updated}</p>}
+    <slot />
+  </main>
+</Base>
+
+<style>
+  .doc {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 56px 16px 96px;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .home {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 7vw, 3.4rem);
+    line-height: 1;
+    margin: 0.6em 0 0.2em;
+  }
+
+  .updated {
+    color: var(--ink-soft);
+    margin: 0 0 2.5em;
+  }
+
+  .doc :global(h2) {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin: 1.8em 0 0.3em;
+  }
+
+  .doc :global(p) {
+    margin: 0 0 1em;
+  }
+</style>

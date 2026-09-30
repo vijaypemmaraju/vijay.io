@@ -211,32 +211,11 @@ export const smaller: Project[] = [
     links: [{ label: "tooey", href: "https://vijaypemmaraju.github.io/tooey/" }],
   },
   {
-    name: "solid otomata",
-    year: 2023,
-    blurb: "a grid of bouncing notes that plays itself, after otomata.",
-    made: [],
-    links: [{ label: "solid otomata", href: "https://vijaypemmaraju.github.io/solid-otomata/" }],
-  },
-  {
     name: "stream typers",
     year: 2022,
     blurb: "a twitch chat game where viewers race to type answers to trivia, flags and riddles.",
     made: [],
-    links: [{ label: "stream typers", href: "https://vijaypemmaraju.github.io/stream-typers/" }],
-  },
-  {
-    name: "us election comparisons",
-    year: 2024,
-    blurb: "every presidential election since 1900, rerun under electoral, proportional and popular-vote rules.",
-    made: [],
-    links: [{ label: "us election comparisons", href: "https://vijaypemmaraju.github.io/us-election-comparisons/" }],
-  },
-  {
-    name: "police brutality visualizations",
-    year: 2020,
-    blurb: "charts of the crowd-sourced 2020 police brutality dataset, by date and place.",
-    made: [],
-    links: [{ label: "police brutality visualizations", href: "https://vijaypemmaraju.github.io/police-brutality-data-visualizations/" }],
+    links: [{ label: "streamtypers.com", href: "https://streamtypers.com" }],
   },
 ].sort((a, b) => b.year - a.year);
 

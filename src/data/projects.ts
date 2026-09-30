@@ -34,7 +34,7 @@ export const feature: Project = {
   name: "seeds for tomorrow",
   year: 2026,
   blurb:
-    "a cozy solarpunk valley. mend its broken power, water and drones so the evening drone show can fly again. there is no text anywhere in the game, so everything is told with light, sound and little robots.",
+    "a cozy solarpunk valley. bring every drone home and fully charged, get the power back on, and the whole valley gathers at the overlook for the evening drone show.",
   made: ["three.js", "blender", "elevenlabs", "cloudflare"],
   links: [{ label: "walk the valley", href: "https://seeds-for-tomorrow.vijayvmp.workers.dev" }],
   image: seeds,

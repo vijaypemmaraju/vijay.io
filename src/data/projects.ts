@@ -1,6 +1,7 @@
 import type { ImageMetadata } from "astro";
 import seeds from "../assets/projects/seeds.png";
 import rako from "../assets/projects/rako.png";
+import rious from "../assets/projects/rious.png";
 import wikitcg from "../assets/projects/wikitcg.png";
 import bsi from "../assets/projects/bsi.png";
 import dailydungeon from "../assets/projects/dailydungeon.gif";
@@ -47,6 +48,16 @@ export const groups: Group[] = [
     name: "games",
     about: "most are seeded or procedural, and all of them run in a browser or on a phone.",
     projects: [
+      {
+        name: "rious",
+        year: 2026,
+        blurb:
+          "an island, a notebook, and no one else. a seeded puzzle island sketched in ballpoint, where your notes write themselves onto the world as you notice things. just started.",
+        made: ["typescript", "canvas", "blender"],
+        links: [{ label: "rious-2d.vijayvmp.workers.dev", href: "https://rious-2d.vijayvmp.workers.dev" }],
+        image: rious,
+        alt: "a blue ballpoint sketch of a beach and jetty on ruled paper, with a red-coated explorer and the handwritten note: day 1. a boat, a storm, then this beach.",
+      },
       {
         name: "rako",
         year: 2026,

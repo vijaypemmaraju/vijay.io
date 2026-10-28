@@ -5,5 +5,6 @@ export default defineConfig({
   redirects: {
     "/vijay": "/",
     "/daily-dungeon": "https://dailydungeon.net",
+    "/null": "https://null-game.vijayvmp.workers.dev",
   },
 });

@@ -2,6 +2,7 @@ import type { ImageMetadata } from "astro";
 import seeds from "../assets/projects/seeds.png";
 import rako from "../assets/projects/rako.png";
 import rious from "../assets/projects/rious.png";
+import nullGame from "../assets/projects/null.png";
 import wikitcg from "../assets/projects/wikitcg.png";
 import bsi from "../assets/projects/bsi.png";
 import dailydungeon from "../assets/projects/dailydungeon.gif";
@@ -48,6 +49,16 @@ export const groups: Group[] = [
     name: "games",
     about: "most are seeded or procedural, and all of them run in a browser or on a phone.",
     projects: [
+      {
+        name: "null",
+        year: 2026,
+        blurb:
+          "a first-person horror game in a tower block grown from a seed. you wake on the unfinished top floor and have to get down to the street, and something in the building only moves when you can't see it. a torch, a hand mirror and a pocketful of site cameras are all you have.",
+        made: ["three.js", "blender", "elevenlabs", "cloudflare"],
+        links: [{ label: "null-game.vijayvmp.workers.dev", href: "https://null-game.vijayvmp.workers.dev" }],
+        image: nullGame,
+        alt: "a dim apartment corridor lit by ceiling tubes, with a black hole ringed in swirling pale light waiting at the far end",
+      },
       {
         name: "rious",
         year: 2026,

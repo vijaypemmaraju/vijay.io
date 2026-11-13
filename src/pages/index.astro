@@ -14,8 +14,8 @@ const isGif = (p: Project) => p.image?.format === "gif";
       <div class="hero-text">
         <h1>vijay<br />pemmaraju</h1>
         <p class="lede">
-          i build seeded worlds, instruments that run in a browser, and small ai creatures that live on your
-          phone. most of it is procedural, and most of it you can play right now.
+          i build apps, tools and games: a camera, a notes app, a live-coding synth and a handful of seeded
+          worlds. most of it is free, and most of it you can try right now.
         </p>
         <ul class="elsewhere">
           {elsewhere.map((l) => <li><a href={l.href} {...external(l.href)}>{l.label}</a></li>)}
@@ -30,9 +30,13 @@ const isGif = (p: Project) => p.image?.format === "gif";
       </figure>
     </header>
 
+    {
+      groups.map((g) => (
+        <>
+        {g.name === "games" && (
     <section class="feature" aria-labelledby="feature-name">
       <a class="feature-shot" href={shot(feature)} {...external(shot(feature)!)} tabindex="-1">
-        <Image src={feature.image!} alt={feature.alt!} widths={[800, 1280, 1600]} sizes="(min-width: 1100px) 1040px, 100vw" loading="eager" />
+        <Image src={feature.image!} alt={feature.alt!} widths={[800, 1280, 1600]} sizes="(min-width: 1100px) 1040px, 100vw" loading="lazy" />
       </a>
       <div class="feature-text">
         <p class="note">{feature.note}</p>
@@ -42,9 +46,7 @@ const isGif = (p: Project) => p.image?.format === "gif";
         <a class="go" href={shot(feature)} {...external(shot(feature)!)}>{feature.links[0].label}</a>
       </div>
     </section>
-
-    {
-      groups.map((g) => (
+        )}
         <section class="group" aria-labelledby={`g-${g.name}`}>
           <div class="group-head">
             <canvas class="specimen" data-name={g.name} aria-hidden="true" />
@@ -79,6 +81,7 @@ const isGif = (p: Project) => p.image?.format === "gif";
             ))}
           </div>
         </section>
+        </>
       ))
     }
 

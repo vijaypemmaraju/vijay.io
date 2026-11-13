@@ -47,6 +47,93 @@ export const feature: Project = {
 
 export const groups: Group[] = [
   {
+    name: "on your phone",
+    about: "free, and they keep your data on the device.",
+    projects: [
+      {
+        name: "schmamera",
+        year: 2026,
+        blurb:
+          "a free camera for iphone. seven looks you blend by dragging across the photo, a plain look developed from the sensor's raw data, and full manual controls. no ads, no account, and nothing leaves your phone. in testflight beta.",
+        made: ["swiftui", "avfoundation", "core image", "metal"],
+        links: [
+          { label: "schmamera.com", href: "https://schmamera.com" },
+          { label: "testflight beta", href: "https://testflight.apple.com/join/228Dun1W" },
+        ],
+        image: schmamera,
+        alt: "the schmamera icon: a small cream camera shrugging with both arms raised",
+        fit: "contain",
+      },
+      {
+        name: "yibble",
+        year: 2026,
+        blurb:
+          "a tiny alien hatches on your phone, listens to you talk, and slowly learns to speak back in its own language. it runs fully offline.",
+        made: ["swift", "spritekit", "on-device ai"],
+        links: [
+          { label: "app store", href: "https://apps.apple.com/us/app/yibble-tiny-alien-pet/id6761661025" },
+          { label: "privacy", href: "/yibble/privacy" },
+        ],
+        image: yibble,
+        alt: "yibble: a round lavender alien with big eyes and two antennae",
+        fit: "contain",
+      },
+      {
+        name: "jottie",
+        year: 2026,
+        blurb: "notes for the disorganized. on-device ai tags, sorts and connects what you write, and it all works offline.",
+        made: ["swiftui", "on-device ml"],
+        links: [
+          { label: "app store", href: "https://apps.apple.com/us/app/jottie-smart-notes/id6757324448" },
+          { label: "jottie.io", href: "https://jottie.io" },
+        ],
+        image: jottie,
+        alt: "the jottie logo, a sketched seal, on lined notebook paper",
+      },
+      {
+        name: "upg",
+        year: 2024,
+        blurb: "an auto-shooting platformer. dash and wall-slide through procedural levels while your weapons fire on their own.",
+        made: ["typescript", "tauri"],
+        links: [
+          { label: "app store", href: "https://apps.apple.com/us/app/upg-bullet-heaven/id6739788187" },
+          { label: "privacy", href: "/upg/privacy-policy" },
+        ],
+        image: upg,
+        alt: "a teal pixel title screen with a small orange character on a ledge",
+        fit: "contain",
+      },
+    ],
+  },
+  {
+    name: "sound",
+    about: "i'm a musician too, so a lot of what i build ends up making noise.",
+    projects: [
+      {
+        name: "rondocode",
+        year: 2026,
+        blurb:
+          "live-code synths and patterns in the browser, even on a phone. it runs on a dsp engine written from scratch in an audioworklet, and it can sing.",
+        made: ["typescript", "audioworklet", "a small language"],
+        links: [
+          { label: "rondocode.com", href: "https://rondocode.com" },
+          { label: "source", href: "https://github.com/vijaypemmaraju/rondocode" },
+        ],
+        image: rondocode,
+        alt: "a code editor defining an acid synth, with an envelope curve drawn inline",
+      },
+      {
+        name: "technically pop",
+        year: 2026,
+        blurb: "short pop songs that explain technical ideas: bond pricing, inflation, backpropagation.",
+        made: ["elevenlabs", "python", "generated video"],
+        links: [{ label: "youtube.com/@technically_pop", href: "https://www.youtube.com/@technically_pop" }],
+        image: technicallyPop,
+        alt: "two bars comparing a 10-year and a 3-year bond under the word sensitivity",
+      },
+    ],
+  },
+  {
     name: "games",
     about: "most are seeded or procedural, and all of them run in a browser or on a phone.",
     projects: [
@@ -147,93 +234,6 @@ export const groups: Group[] = [
         links: [{ label: "neural-gamedev.vijayvmp.workers.dev", href: "https://neural-gamedev.vijayvmp.workers.dev" }],
         image: megaflora,
         alt: "a row of glowing teal and gold vines growing out of dark soil",
-      },
-    ],
-  },
-  {
-    name: "sound",
-    about: "i'm a musician too, so a lot of what i build ends up making noise.",
-    projects: [
-      {
-        name: "rondocode",
-        year: 2026,
-        blurb:
-          "live-code synths and patterns in the browser, even on a phone. it runs on a dsp engine written from scratch in an audioworklet, and it can sing.",
-        made: ["typescript", "audioworklet", "a small language"],
-        links: [
-          { label: "rondocode.com", href: "https://rondocode.com" },
-          { label: "source", href: "https://github.com/vijaypemmaraju/rondocode" },
-        ],
-        image: rondocode,
-        alt: "a code editor defining an acid synth, with an envelope curve drawn inline",
-      },
-      {
-        name: "technically pop",
-        year: 2026,
-        blurb: "short pop songs that explain technical ideas: bond pricing, inflation, backpropagation.",
-        made: ["elevenlabs", "python", "generated video"],
-        links: [{ label: "youtube.com/@technically_pop", href: "https://www.youtube.com/@technically_pop" }],
-        image: technicallyPop,
-        alt: "two bars comparing a 10-year and a 3-year bond under the word sensitivity",
-      },
-    ],
-  },
-  {
-    name: "on your phone",
-    about: "free, and they keep your data on the device.",
-    projects: [
-      {
-        name: "schmamera",
-        year: 2026,
-        blurb:
-          "a free camera for iphone. seven looks you blend by dragging across the photo, a plain look developed from the sensor's raw data, and full manual controls. no ads, no account, and nothing leaves your phone. in testflight beta.",
-        made: ["swiftui", "avfoundation", "core image", "metal"],
-        links: [
-          { label: "schmamera.com", href: "https://schmamera.com" },
-          { label: "testflight beta", href: "https://testflight.apple.com/join/228Dun1W" },
-        ],
-        image: schmamera,
-        alt: "the schmamera icon: a small cream camera shrugging with both arms raised",
-        fit: "contain",
-      },
-      {
-        name: "yibble",
-        year: 2026,
-        blurb:
-          "a tiny alien hatches on your phone, listens to you talk, and slowly learns to speak back in its own language. it runs fully offline.",
-        made: ["swift", "spritekit", "on-device ai"],
-        links: [
-          { label: "app store", href: "https://apps.apple.com/us/app/yibble-tiny-alien-pet/id6761661025" },
-          { label: "privacy", href: "/yibble/privacy" },
-        ],
-        image: yibble,
-        alt: "yibble: a round lavender alien with big eyes and two antennae",
-        fit: "contain",
-      },
-      {
-        name: "jottie",
-        year: 2026,
-        blurb: "notes for the disorganized. on-device ai tags, sorts and connects what you write, and it all works offline.",
-        made: ["swiftui", "on-device ml"],
-        links: [
-          { label: "app store", href: "https://apps.apple.com/us/app/jottie-smart-notes/id6757324448" },
-          { label: "jottie.io", href: "https://jottie.io" },
-        ],
-        image: jottie,
-        alt: "the jottie logo, a sketched seal, on lined notebook paper",
-      },
-      {
-        name: "upg",
-        year: 2024,
-        blurb: "an auto-shooting platformer. dash and wall-slide through procedural levels while your weapons fire on their own.",
-        made: ["typescript", "tauri"],
-        links: [
-          { label: "app store", href: "https://apps.apple.com/us/app/upg-bullet-heaven/id6739788187" },
-          { label: "privacy", href: "/upg/privacy-policy" },
-        ],
-        image: upg,
-        alt: "a teal pixel title screen with a small orange character on a ledge",
-        fit: "contain",
       },
     ],
   },

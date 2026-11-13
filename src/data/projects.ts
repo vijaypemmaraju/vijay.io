@@ -142,12 +142,9 @@ export const groups: Group[] = [
         name: "june's ascent",
         year: 2026,
         blurb:
-          "a webcomic and a climbing game about june, who wakes up in a meadow at the foot of a giant mountain with her memories gone. the comic panels are staged in 3d and rendered with a ray tracer, and some of them move. episode 1 is out and there are more on the way.",
-        made: ["rust", "blender", "three.js", "cloudflare"],
-        links: [
-          { label: "junesascent.com", href: "https://junesascent.com" },
-          { label: "the game", href: "https://junesascent.com/game/" },
-        ],
+          "a webcomic about june, who wakes up in a meadow at the foot of a giant mountain with her memories gone. the comic panels are staged in 3d and rendered with a ray tracer, and some of them move. episode 1 is out and there are more on the way.",
+        made: ["rust", "blender", "cloudflare"],
+        links: [{ label: "junesascent.com", href: "https://junesascent.com" }],
         image: junesAscent,
         alt: "a watercolor of june, a girl with red hair in a purple outfit, lying in a green meadow and looking up",
       },

@@ -115,7 +115,7 @@ export const groups: Group[] = [
         blurb:
           "a cozy solarpunk game set in a valley. you bring all the drones home and charge them, get the power back on, and then everyone gathers at the overlook for a drone show in the evening.",
         made: ["three.js", "blender", "elevenlabs", "cloudflare"],
-        links: [{ label: "walk the valley", href: "https://seeds-for-tomorrow.vijayvmp.workers.dev" }],
+        links: [{ label: "walk the valley", href: "https://kalsvalley.com" }],
         image: kalsValley,
         alt: "a sunlit porch overlooking a green valley, with a small round robot waving and a solar glider parked in the grass",
       },

@@ -12,6 +12,7 @@ import megaflora from "../assets/projects/megaflora.png";
 import rondocode from "../assets/projects/rondocode.png";
 import technicallyPop from "../assets/projects/technically-pop.jpg";
 import yibble from "../assets/projects/yibble-icon.png";
+import schmamera from "../assets/projects/schmamera-icon.png";
 import jottie from "../assets/projects/jottie.png";
 import upg from "../assets/projects/upg.png";
 
@@ -181,6 +182,20 @@ export const groups: Group[] = [
     name: "on your phone",
     about: "free, and they keep your data on the device.",
     projects: [
+      {
+        name: "schmamera",
+        year: 2026,
+        blurb:
+          "a free camera for iphone. seven looks you blend by dragging across the photo, a plain look developed from the sensor's raw data, and full manual controls. no ads, no account, and nothing leaves your phone. in testflight beta.",
+        made: ["swiftui", "avfoundation", "core image", "metal"],
+        links: [
+          { label: "schmamera.com", href: "https://schmamera.com" },
+          { label: "testflight beta", href: "https://testflight.apple.com/join/228Dun1W" },
+        ],
+        image: schmamera,
+        alt: "the schmamera icon: a small cream camera shrugging with both arms raised",
+        fit: "contain",
+      },
       {
         name: "yibble",
         year: 2026,

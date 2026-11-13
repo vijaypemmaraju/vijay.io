@@ -37,7 +37,7 @@ export const feature: Project = {
   name: "seeds for tomorrow",
   year: 2026,
   blurb:
-    "a cozy solarpunk valley. bring every drone home and fully charged, get the power back on, and the whole valley gathers at the overlook for the evening drone show.",
+    "a cozy solarpunk game set in a valley. you bring all the drones home and charge them, get the power back on, and then everyone gathers at the overlook for a drone show in the evening.",
   made: ["three.js", "blender", "elevenlabs", "cloudflare"],
   links: [{ label: "walk the valley", href: "https://seeds-for-tomorrow.vijayvmp.workers.dev" }],
   image: seeds,
@@ -48,13 +48,13 @@ export const feature: Project = {
 export const groups: Group[] = [
   {
     name: "on your phone",
-    about: "free, and they keep your data on the device.",
+    about: "these are all free and they keep your data on your phone.",
     projects: [
       {
         name: "schmamera",
         year: 2026,
         blurb:
-          "a free camera for iphone. seven looks you blend by dragging across the photo, a plain look developed from the sensor's raw data, and full manual controls. no ads, no account, and nothing leaves your phone. in testflight beta.",
+          "a free camera app for iphone. there are seven looks you can blend by dragging across the photo, a plain look that's developed from the sensor's raw data, and a full manual mode. no ads, no account, and nothing leaves your phone. it's in testflight beta right now.",
         made: ["swiftui", "avfoundation", "core image", "metal"],
         links: [
           { label: "schmamera.com", href: "https://schmamera.com" },
@@ -68,7 +68,7 @@ export const groups: Group[] = [
         name: "yibble",
         year: 2026,
         blurb:
-          "a tiny alien hatches on your phone, listens to you talk, and slowly learns to speak back in its own language. it runs fully offline.",
+          "a tiny alien pet that hatches on your phone. it listens to you talk and slowly learns to talk back in its own language. it works fully offline.",
         made: ["swift", "spritekit", "on-device ai"],
         links: [
           { label: "app store", href: "https://apps.apple.com/us/app/yibble-tiny-alien-pet/id6761661025" },
@@ -81,7 +81,7 @@ export const groups: Group[] = [
       {
         name: "jottie",
         year: 2026,
-        blurb: "notes for the disorganized. on-device ai tags, sorts and connects what you write, and it all works offline.",
+        blurb: "a note taking app for people like me that like taking notes but dread organizing them. it tags and organizes your notes for you on your device, and it works offline.",
         made: ["swiftui", "on-device ml"],
         links: [
           { label: "app store", href: "https://apps.apple.com/us/app/jottie-smart-notes/id6757324448" },
@@ -93,7 +93,7 @@ export const groups: Group[] = [
       {
         name: "upg",
         year: 2024,
-        blurb: "an auto-shooting platformer. dash and wall-slide through procedural levels while your weapons fire on their own.",
+        blurb: "a platformer where your weapons fire on their own. you dash and wall-slide through procedurally generated levels.",
         made: ["typescript", "tauri"],
         links: [
           { label: "app store", href: "https://apps.apple.com/us/app/upg-bullet-heaven/id6739788187" },
@@ -113,7 +113,7 @@ export const groups: Group[] = [
         name: "rondocode",
         year: 2026,
         blurb:
-          "live-code synths and patterns in the browser, even on a phone. it runs on a dsp engine written from scratch in an audioworklet, and it can sing.",
+          "a live-coding environment for synths and patterns that runs in the browser, even on a phone. i wrote the dsp engine from scratch in an audioworklet. it can also sing.",
         made: ["typescript", "audioworklet", "a small language"],
         links: [
           { label: "rondocode.com", href: "https://rondocode.com" },
@@ -125,7 +125,7 @@ export const groups: Group[] = [
       {
         name: "technically pop",
         year: 2026,
-        blurb: "short pop songs that explain technical ideas: bond pricing, inflation, backpropagation.",
+        blurb: "short pop songs that explain technical stuff like bond pricing, inflation and backpropagation.",
         made: ["elevenlabs", "python", "generated video"],
         links: [{ label: "youtube.com/@technically_pop", href: "https://www.youtube.com/@technically_pop" }],
         image: technicallyPop,
@@ -135,13 +135,13 @@ export const groups: Group[] = [
   },
   {
     name: "games",
-    about: "most are seeded or procedural, and all of them run in a browser or on a phone.",
+    about: "most of these are procedurally generated from a seed. they all run in a browser or on a phone.",
     projects: [
       {
         name: "null",
         year: 2026,
         blurb:
-          "a first-person horror game in a tower block grown from a seed. you wake on the unfinished top floor and have to get down to the street, and something in the building only moves when you can't see it. a torch, a hand mirror and a pocketful of site cameras are all you have.",
+          "a first-person horror game set in a tower block that's generated from a seed. you wake up on the unfinished top floor and have to make it down to the street. there's something in the building that only moves when you aren't looking at it. you get a torch, a hand mirror and some site cameras.",
         made: ["three.js", "blender", "elevenlabs", "cloudflare"],
         links: [{ label: "null-game.vijayvmp.workers.dev", href: "https://null-game.vijayvmp.workers.dev" }],
         image: nullGame,
@@ -151,7 +151,7 @@ export const groups: Group[] = [
         name: "rious",
         year: 2026,
         blurb:
-          "an island, a notebook, and no one else. a seeded puzzle island sketched in ballpoint, where your notes write themselves onto the world as you notice things. just started.",
+          "a puzzle game on a seeded island, drawn in ballpoint pen. you have a notebook, and your notes get written onto the world as you notice things. i just started this one.",
         made: ["typescript", "canvas", "blender"],
         links: [{ label: "rious-2d.vijayvmp.workers.dev", href: "https://rious-2d.vijayvmp.workers.dev" }],
         image: rious,
@@ -161,7 +161,7 @@ export const groups: Group[] = [
         name: "rako",
         year: 2026,
         blurb:
-          "a field guide to three great beasts. one seed string builds the whole archipelago, its creatures and its weather in the browser, with no engine, and a piano score to wander by.",
+          "an exploration game about three giant beasts. the whole archipelago, the creatures and the weather are generated in the browser from one seed string. there's no game engine, and it has a piano score.",
         made: ["typescript", "webgl", "web audio"],
         links: [{ label: "rako.vijayvmp.workers.dev", href: "https://rako.vijayvmp.workers.dev" }],
         image: rako,
@@ -171,7 +171,7 @@ export const groups: Group[] = [
         name: "wikitcg",
         year: 2026,
         blurb:
-          "every wikipedia article is a holographic trading card. open packs, fuse duplicates, trade, raid and battle. over sixteen thousand players so far, most of them in france.",
+          "a trading card game where every wikipedia article is a holographic card. you can open packs, fuse duplicates, trade, raid and battle. it has over sixteen thousand players so far, and most of them are in france.",
         made: ["svelte", "three.js", "cloudflare"],
         links: [{ label: "wikitcg.net", href: "https://wikitcg.net" }],
         image: wikitcg,
@@ -181,7 +181,7 @@ export const groups: Group[] = [
         name: "big science ideas: systems",
         year: 2026,
         blurb:
-          "a rebuild of mecc's 1996 classroom cd-rom: a pond, a toilet and the plates of the earth. no copy of the original survives online, so it was pieced back together from sell sheets and teacher guides.",
+          "a rebuild of a classroom cd-rom that mecc put out in 1996. it has a pond, a toilet and plate tectonics. there's no copy of the original anywhere online, so i pieced it back together from sell sheets and teacher guides.",
         made: ["typescript", "canvas", "vite"],
         links: [{ label: "big-science-ideas.vijayvmp.workers.dev", href: "https://big-science-ideas.vijayvmp.workers.dev" }],
         image: bsi,
@@ -191,7 +191,7 @@ export const groups: Group[] = [
         name: "semantical",
         year: 2024,
         blurb:
-          "a word association game. click through a growing graph of related words until you land on the target.",
+          "a word association game. you click through a growing graph of related words until you get to the target word.",
         made: ["react", "neo4j", "claude"],
         links: [
           { label: "semantical.fun", href: "https://semantical.fun" },
@@ -203,7 +203,7 @@ export const groups: Group[] = [
       {
         name: "daily dungeon",
         year: 2022,
-        blurb: "a pixel-art dungeon crawler with puzzles. a new dungeon every day, and about thirty secret badges.",
+        blurb: "a pixel art dungeon crawler with puzzles. there's a new dungeon every day and about thirty secret badges.",
         made: ["phaser", "react"],
         links: [{ label: "dailydungeon.net", href: "https://dailydungeon.net" }],
         image: dailydungeon,
@@ -214,12 +214,12 @@ export const groups: Group[] = [
   },
   {
     name: "simulations",
-    about: "lots of small things, computed on the gpu, behaving like living ones.",
+    about: "gpu simulations of lots of tiny things.",
     projects: [
       {
         name: "ten million fireflies",
         year: 2026,
-        blurb: "ten million fireflies drifting and pulsing at 60fps, simulated entirely in compute shaders.",
+        blurb: "ten million fireflies drifting and pulsing at 60fps. the whole simulation runs in compute shaders.",
         made: ["webgpu", "three.js tsl"],
         links: [{ label: "tenmillionfireflies.com", href: "https://tenmillionfireflies.com" }],
         image: fireflies,
@@ -229,7 +229,7 @@ export const groups: Group[] = [
         name: "neural megaflora",
         year: 2026,
         blurb:
-          "plants grown in real time by a trained neural cellular automaton. cut one and it heals. an early prototype.",
+          "plants that are grown in real time by a trained neural cellular automaton. if you cut one, it heals. it's an early prototype.",
         made: ["webgpu", "wgsl", "pytorch"],
         links: [{ label: "neural-gamedev.vijayvmp.workers.dev", href: "https://neural-gamedev.vijayvmp.workers.dev" }],
         image: megaflora,
@@ -243,14 +243,14 @@ export const smaller: Project[] = [
   {
     name: "tooey",
     year: 2026,
-    blurb: "a ui library for interfaces that llms write, using about 41% fewer tokens than the same thing in react.",
+    blurb: "a ui library made for llms to write. it uses about 41% fewer tokens than the same ui in react.",
     made: [],
     links: [{ label: "tooey", href: "https://vijaypemmaraju.github.io/tooey/" }],
   },
   {
     name: "stream typers",
     year: 2022,
-    blurb: "a twitch chat game where viewers race to type answers to trivia, flags and riddles.",
+    blurb: "a twitch chat game where viewers race to type the answers to trivia, flags and riddles.",
     made: [],
     links: [{ label: "streamtypers.com", href: "https://streamtypers.com" }],
   },

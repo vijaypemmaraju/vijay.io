@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Base from "../layouts/Base.astro";
-import { feature, groups, smaller, elsewhere, type Project } from "../data/projects";
+import { groups, smaller, elsewhere, type Project } from "../data/projects";
 
 const shot = (p: Project) => p.links[0]?.href;
 const external = (href: string) => (href.startsWith("http") ? { target: "_blank", rel: "noopener" } : {});
@@ -32,21 +32,6 @@ const isGif = (p: Project) => p.image?.format === "gif";
 
     {
       groups.map((g) => (
-        <>
-        {g.name === "games" && (
-    <section class="feature" aria-labelledby="feature-name">
-      <a class="feature-shot" href={shot(feature)} {...external(shot(feature)!)} tabindex="-1">
-        <Image src={feature.image!} alt={feature.alt!} widths={[800, 1280, 1600]} sizes="(min-width: 1100px) 1040px, 100vw" loading="lazy" />
-      </a>
-      <div class="feature-text">
-        <p class="note">{feature.note}</p>
-        <h2 id="feature-name">{feature.name}</h2>
-        <p>{feature.blurb}</p>
-        <p class="made">made with {feature.made.join(", ")}</p>
-        <a class="go" href={shot(feature)} {...external(shot(feature)!)}>{feature.links[0].label}</a>
-      </div>
-    </section>
-        )}
         <section class="group" aria-labelledby={`g-${g.name}`}>
           <div class="group-head">
             <canvas class="specimen" data-name={g.name} aria-hidden="true" />
@@ -81,7 +66,6 @@ const isGif = (p: Project) => p.image?.format === "gif";
             ))}
           </div>
         </section>
-        </>
       ))
     }
 
@@ -261,52 +245,6 @@ const isGif = (p: Project) => p.image?.format === "gif";
     text-decoration-thickness: 2px;
   }
 
-  /* feature */
-  .feature {
-    display: grid;
-    grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
-    gap: clamp(20px, 3vw, 44px);
-    align-items: end;
-    padding: 48px 0 96px;
-  }
-
-  .feature-shot img {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    border-radius: 3px;
-    box-shadow: 0 0 0 1px var(--ink-faint);
-  }
-
-  .feature h2 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
-    line-height: 0.95;
-    margin: 0.15em 0 0.4em;
-  }
-
-  .note {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 1.1rem;
-    color: var(--ink-soft);
-    margin: 0;
-  }
-
-  .feature-text > p {
-    max-width: 34em;
-  }
-
-  .go {
-    display: inline-block;
-    margin-top: 0.4em;
-    font-weight: 600;
-    font-size: 1.05rem;
-  }
-
   /* groups */
   .group {
     display: grid;
@@ -462,7 +400,6 @@ const isGif = (p: Project) => p.image?.format === "gif";
       height: min(110vw, 520px);
     }
 
-    .feature,
     .group {
       grid-template-columns: 1fr;
     }

@@ -1,5 +1,5 @@
 import type { ImageMetadata } from "astro";
-import seeds from "../assets/projects/seeds.png";
+import kalsValley from "../assets/projects/kals-valley.png";
 import nullGame from "../assets/projects/null.png";
 import junesAscent from "../assets/projects/junes-ascent.png";
 import wikitcg from "../assets/projects/wikitcg.png";
@@ -24,22 +24,9 @@ export type Project = {
   alt?: string;
   // cover crops to fill the frame; contain keeps icons and portrait shots whole
   fit?: "cover" | "contain";
-  note?: string;
 };
 
 export type Group = { name: string; about: string; projects: Project[] };
-
-export const feature: Project = {
-  name: "seeds for tomorrow",
-  year: 2026,
-  blurb:
-    "a cozy solarpunk game set in a valley. you bring all the drones home and charge them, get the power back on, and then everyone gathers at the overlook for a drone show in the evening.",
-  made: ["three.js", "blender", "elevenlabs", "cloudflare"],
-  links: [{ label: "walk the valley", href: "https://seeds-for-tomorrow.vijayvmp.workers.dev" }],
-  image: seeds,
-  alt: "a sunlit porch overlooking a green valley, with a small round robot waving and a solar glider parked in the grass",
-  note: "my favorite thing i'm working on right now. it changes most days.",
-};
 
 export const groups: Group[] = [
   {
@@ -122,6 +109,16 @@ export const groups: Group[] = [
     name: "games",
     about: "most of these are procedurally generated from a seed. they all run in a browser or on a phone.",
     projects: [
+      {
+        name: "kal's valley",
+        year: 2026,
+        blurb:
+          "a cozy solarpunk game set in a valley. you bring all the drones home and charge them, get the power back on, and then everyone gathers at the overlook for a drone show in the evening.",
+        made: ["three.js", "blender", "elevenlabs", "cloudflare"],
+        links: [{ label: "walk the valley", href: "https://seeds-for-tomorrow.vijayvmp.workers.dev" }],
+        image: kalsValley,
+        alt: "a sunlit porch overlooking a green valley, with a small round robot waving and a solar glider parked in the grass",
+      },
       {
         name: "null",
         year: 2026,

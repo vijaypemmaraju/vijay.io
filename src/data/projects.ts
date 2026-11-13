@@ -1,7 +1,5 @@
 import type { ImageMetadata } from "astro";
 import seeds from "../assets/projects/seeds.png";
-import rako from "../assets/projects/rako.png";
-import rious from "../assets/projects/rious.png";
 import nullGame from "../assets/projects/null.png";
 import junesAscent from "../assets/projects/junes-ascent.png";
 import wikitcg from "../assets/projects/wikitcg.png";
@@ -9,13 +7,10 @@ import bsi from "../assets/projects/bsi.png";
 import dailydungeon from "../assets/projects/dailydungeon.gif";
 import semantical from "../assets/projects/semantical.png";
 import fireflies from "../assets/projects/fireflies.png";
-import megaflora from "../assets/projects/megaflora.png";
 import rondocode from "../assets/projects/rondocode.png";
 import technicallyPop from "../assets/projects/technically-pop.jpg";
 import yibble from "../assets/projects/yibble-icon.png";
-import schmamera from "../assets/projects/schmamera-icon.png";
 import jottie from "../assets/projects/jottie.png";
-import upg from "../assets/projects/upg.png";
 
 export type Link = { label: string; href: string };
 
@@ -52,20 +47,6 @@ export const groups: Group[] = [
     about: "these are all free and they keep your data on your phone.",
     projects: [
       {
-        name: "schmamera",
-        year: 2026,
-        blurb:
-          "a free camera app for iphone. there are seven looks you can blend by dragging across the photo, a plain look that's developed from the sensor's raw data, and a full manual mode. no ads, no account, and nothing leaves your phone. it's in testflight beta right now.",
-        made: ["swiftui", "avfoundation", "core image", "metal"],
-        links: [
-          { label: "schmamera.com", href: "https://schmamera.com" },
-          { label: "testflight beta", href: "https://testflight.apple.com/join/228Dun1W" },
-        ],
-        image: schmamera,
-        alt: "the schmamera icon: a small cream camera shrugging with both arms raised",
-        fit: "contain",
-      },
-      {
         name: "yibble",
         year: 2026,
         blurb:
@@ -90,19 +71,6 @@ export const groups: Group[] = [
         ],
         image: jottie,
         alt: "the jottie logo, a sketched seal, on lined notebook paper",
-      },
-      {
-        name: "upg",
-        year: 2024,
-        blurb: "a platformer where your weapons fire on their own. you dash and wall-slide through procedurally generated levels.",
-        made: ["typescript", "tauri"],
-        links: [
-          { label: "app store", href: "https://apps.apple.com/us/app/upg-bullet-heaven/id6739788187" },
-          { label: "privacy", href: "/upg/privacy-policy" },
-        ],
-        image: upg,
-        alt: "a teal pixel title screen with a small orange character on a ledge",
-        fit: "contain",
       },
     ],
   },
@@ -135,8 +103,8 @@ export const groups: Group[] = [
     ],
   },
   {
-    name: "games",
-    about: "most of these are procedurally generated from a seed. they all run in a browser or on a phone.",
+    name: "comics",
+    about: "stories told in panels.",
     projects: [
       {
         name: "june's ascent",
@@ -148,6 +116,12 @@ export const groups: Group[] = [
         image: junesAscent,
         alt: "a watercolor of june, a girl with red hair in a purple outfit, lying in a green meadow and looking up",
       },
+    ],
+  },
+  {
+    name: "games",
+    about: "most of these are procedurally generated from a seed. they all run in a browser or on a phone.",
+    projects: [
       {
         name: "null",
         year: 2026,
@@ -157,26 +131,6 @@ export const groups: Group[] = [
         links: [{ label: "null-game.vijayvmp.workers.dev", href: "https://null-game.vijayvmp.workers.dev" }],
         image: nullGame,
         alt: "a dim apartment corridor lit by ceiling tubes, with a black hole ringed in swirling pale light waiting at the far end",
-      },
-      {
-        name: "rious",
-        year: 2026,
-        blurb:
-          "a puzzle game on a seeded island, drawn in ballpoint pen. you have a notebook, and your notes get written onto the world as you notice things. i just started this one.",
-        made: ["typescript", "canvas", "blender"],
-        links: [{ label: "rious-2d.vijayvmp.workers.dev", href: "https://rious-2d.vijayvmp.workers.dev" }],
-        image: rious,
-        alt: "a blue ballpoint sketch of a beach and jetty on ruled paper, with a red-coated explorer and the handwritten note: day 1. a boat, a storm, then this beach.",
-      },
-      {
-        name: "rako",
-        year: 2026,
-        blurb:
-          "an exploration game about three giant beasts. the whole archipelago, the creatures and the weather are generated in the browser from one seed string. there's no game engine, and it has a piano score.",
-        made: ["typescript", "webgl", "web audio"],
-        links: [{ label: "rako.vijayvmp.workers.dev", href: "https://rako.vijayvmp.workers.dev" }],
-        image: rako,
-        alt: "an ink and watercolour title screen: a cloaked figure on a beach looking out at three beasts on distant islands",
       },
       {
         name: "wikitcg",
@@ -235,16 +189,6 @@ export const groups: Group[] = [
         links: [{ label: "tenmillionfireflies.com", href: "https://tenmillionfireflies.com" }],
         image: fireflies,
         alt: "a dense cloud of green and gold points of light",
-      },
-      {
-        name: "neural megaflora",
-        year: 2026,
-        blurb:
-          "plants that are grown in real time by a trained neural cellular automaton. if you cut one, it heals. it's an early prototype.",
-        made: ["webgpu", "wgsl", "pytorch"],
-        links: [{ label: "neural-gamedev.vijayvmp.workers.dev", href: "https://neural-gamedev.vijayvmp.workers.dev" }],
-        image: megaflora,
-        alt: "a row of glowing teal and gold vines growing out of dark soil",
       },
     ],
   },
